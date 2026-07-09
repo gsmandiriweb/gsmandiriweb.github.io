@@ -12,8 +12,8 @@
 
   // Svelte 5 runes.
   let token = $state('');
-  let owner = $state(import.meta.env.PUBLIC_GITHUB_OWNER ?? 'cvbsm');
-  let repo = $state(import.meta.env.PUBLIC_GITHUB_REPO ?? 'cvbsm-content');
+  let owner = $state(import.meta.env.PUBLIC_GITHUB_OWNER ?? 'gsmandiriweb');
+  let repo = $state(import.meta.env.PUBLIC_GITHUB_REPO ?? 'marketing');
   let branch = $state(import.meta.env.PUBLIC_GITHUB_BRANCH ?? 'main');
   let postsDir = $state(import.meta.env.PUBLIC_GITHUB_POSTS_DIR ?? 'blog');
 

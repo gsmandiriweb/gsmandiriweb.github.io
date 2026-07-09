@@ -8,8 +8,8 @@ interface LoaderContext {
   logger: { info(msg: string): void; warn(msg: string): void };
 }
 
-const OWNER = process.env.GITHUB_OWNER ?? 'cvbsm';
-const REPO = process.env.GITHUB_REPO ?? 'cvbsm-content';
+const OWNER = process.env.GITHUB_OWNER ?? 'gsmandiriweb';
+const REPO = process.env.GITHUB_REPO ?? 'marketing';
 const BRANCH = process.env.GITHUB_BRANCH ?? 'main';
 const POSTS_DIR = process.env.GITHUB_POSTS_DIR ?? 'blog';
 const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_DIR}`;

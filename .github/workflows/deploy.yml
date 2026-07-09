@@ -1,0 +1,64 @@
+name: Rebuild site
+
+on:
+  # Rebuild when blog content or site source changes.
+  push:
+    branches: [main]
+  # Also rebuild on a schedule so future-dated posts auto-publish
+  # once their scheduled date/time passes (serverless = no cron in code).
+  schedule:
+    - cron: '17 */3 * * *'   # every 3 hours, off the :00 mark
+  # Allow manual rebuilds from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read      # built-in GITHUB_TOKEN only needs read on its own repo
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build (fetch blog from GitHub at build time)
+        # Public repo -> no token needed. The loader reads GITHUB_OWNER/REPO/BRANCH
+        # from these env vars; defaults already point at gsmandiriweb/marketing.
+        env:
+          GITHUB_OWNER: gsmandiriweb
+          GITHUB_REPO: marketing
+          GITHUB_BRANCH: main
+          GITHUB_POSTS_DIR: blog
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
