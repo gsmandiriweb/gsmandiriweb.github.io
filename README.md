@@ -61,6 +61,17 @@ A Svelte 5 island. The admin pastes a fine-grained PAT in the browser
 - **batch scheduler**: set a start date + interval, push N posts with
   computed sequential `pubDate` frontmatter
 
+## Rate limits (dev + CI)
+The loader hits the GitHub **Contents API** at build/dev time:
+- Unauthenticated: **60 requests/hour** per IP. Restarting `astro dev`
+  many times an hour can exhaust this.
+- Authenticated (any read-capable PAT in `GITHUB_TOKEN`): **5,000/hour**.
+- **Cache defense:** every successful fetch is written to `.cache/blog/`.
+  If a later fetch is rate-limited or the repo is unreachable, the loader
+  reuses the last good cache so the build never fails. Set `GITHUB_CACHE=0`
+  to force a fresh fetch (e.g. after bulk-editing many posts).
+- `.cache/` is gitignored — never committed.
+
 ## Notes / caveats
 - Images served from GitHub via jsDelivr are NOT auto-optimized by
   Astro's `<Image/>` (those run on build-time assets). Compress before

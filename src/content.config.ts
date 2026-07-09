@@ -1,5 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import matter from 'gray-matter';
+import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { existsSync } from 'node:fs';
 
 // Minimal shape of the Astro 7 loader context we use (avoids deep internal import).
 interface LoaderContext {
@@ -9,16 +12,25 @@ interface LoaderContext {
 }
 
 const OWNER = process.env.GITHUB_OWNER ?? 'gsmandiriweb';
-const REPO = process.env.GITHUB_REPO ?? 'marketing';
+const REPO = process.env.GITHUB_REPO ?? 'gsmandiriweb.github.io';
 const BRANCH = process.env.GITHUB_BRANCH ?? 'main';
 const POSTS_DIR = process.env.GITHUB_POSTS_DIR ?? 'blog';
 const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_DIR}`;
 const CDN_BASE = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/${POSTS_DIR}`;
 
+// Rate-limit defense (see README §Rate limits).
+//  - GITHUB_TOKEN in .env lifts 60 -> 5000 req/hr (read-only fine-grained PAT).
+//  - Fetched posts are cached to .cache/blog/ and reused when the API is
+//    rate-limited or offline, so `astro dev`/`astro build` keep working.
+const CACHE_DIR = fileURLToPath(new URL('../.cache/blog/', import.meta.url));
+const USE_CACHE = process.env.GITHUB_CACHE !== '0';
+
+interface RawPost { name: string; path: string; download_url: string; raw: string }
+
 /**
  * Astro 7 Content Layer loader: pulls Markdown + frontmatter from the configured
- * GitHub repo at build time and stores each post in the content DataStore, so every
- * blog post is emitted as fully prerendered, SEO-ready HTML at `astro build`.
+ * GitHub repo at build/dev time and stores each post in the content DataStore, so
+ * every blog post is emitted as fully prerendered, SEO-ready HTML.
  */
 const loader = {
   name: 'github-blog-loader',
@@ -31,51 +43,67 @@ const loader = {
     };
     if (token) headers.Authorization = `Bearer ${token}`;
 
-    let files: { name: string; path: string; download_url: string }[] = [];
+    let posts: RawPost[] | null = null;
     try {
       const listing = await fetchJson(`${API_BASE}?ref=${BRANCH}`, headers);
-      files = (listing as any[]).filter((f) => /\.(md|markdown)$/i.test(f.name));
+      const files = (listing as any[]).filter((f) => /\.(md|markdown)$/i.test(f.name));
+      posts = await Promise.all(
+        files.map(async (f) => ({
+          name: f.name,
+          path: f.path,
+          download_url: f.download_url,
+          raw: await fetchText(f.download_url, headers),
+        }))
+      );
+      if (USE_CACHE) await writeCache(posts);
+      context.logger.info(`github-blog-loader: fetched ${posts.length} post(s) from GitHub`);
     } catch (e) {
-      // Fallback for local dev / PoC: load from src/sample/ when the repo
-      // is unreachable or not configured. Swap in real GitHub vars at build time.
-      context.logger.warn(`github-blog-loader: falling back to local sample posts (${(e as Error).message})`);
-      files = await localSamplePosts();
+      const msg = (e as Error).message;
+      // Rate-limited or offline -> reuse last good cache instead of failing the build.
+      if (USE_CACHE && existsSync(CACHE_DIR)) {
+        context.logger.warn(`github-blog-loader: GitHub unavailable (${msg}); using cached posts`);
+        posts = await readCache();
+      } else {
+        throw e;
+      }
     }
 
-    for (const file of files) {
-      const raw = file.download_url.startsWith('http')
-        ? await fetchText(file.download_url, headers)
-        : await readLocal(file.download_url);
-      const { data, content } = matter(raw) as { data: Record<string, any>; content: string };
+    if (!posts) {
+      context.logger.warn('github-blog-loader: no posts (and no cache)');
+      return;
+    }
+
+    for (const file of posts) {
+      const { data, content } = matter(file.raw) as { data: Record<string, any>; content: string };
       if (data.trashed || data.draft) continue;
 
       const id = file.name.replace(/\.(md|markdown)$/i, '');
       const storeData: Record<string, unknown> = {
         ...data,
         id,
-        // Local samples already carry absolute/relative cover; GitHub path -> CDN.
         cover: data.cover
-          ? file.download_url.startsWith('http')
-            ? `${CDN_BASE}/${String(data.cover).replace(/^\/+/, '')}`
-            : String(data.cover)
+          ? `${CDN_BASE}/${String(data.cover).replace(/^\/+/, '')}`
           : undefined,
       };
       context.store.set({ id, data: storeData, body: content, filePath: file.path });
     }
-    context.logger.info(`github-blog-loader: loaded ${files.length} post(s)`);
+    context.logger.info(`github-blog-loader: loaded ${posts.length} post(s)`);
   },
 };
 
-import { readFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-async function localSamplePosts(): Promise<{ name: string; path: string; download_url: string }[]> {
-  const dir = fileURLToPath(new URL('./sample/', import.meta.url));
-  const { readdir } = await import('node:fs/promises');
-  const names = (await readdir(dir)).filter((n) => /\.(md|markdown)$/i.test(n));
-  return names.map((n) => ({ name: n, path: `sample/${n}`, download_url: `local:${dir}${n}` }));
+async function writeCache(posts: RawPost[]): Promise<void> {
+  await mkdir(CACHE_DIR, { recursive: true });
+  await writeFile(`${CACHE_DIR}/index.json`, JSON.stringify(posts.map((p) => ({ name: p.name, path: p.path, download_url: p.download_url }))), 'utf-8');
+  for (const p of posts) await writeFile(`${CACHE_DIR}/${p.name}`, p.raw, 'utf-8');
 }
-async function readLocal(localPath: string): Promise<string> {
-  return readFile(localPath.replace(/^local:/, ''), 'utf-8');
+async function readCache(): Promise<RawPost[]> {
+  const idx = JSON.parse(await readFile(`${CACHE_DIR}/index.json`, 'utf-8')) as { name: string; path: string; download_url: string }[];
+  return Promise.all(
+    idx.map(async (m) => ({
+      ...m,
+      raw: await readFile(`${CACHE_DIR}/${m.name}`, 'utf-8'),
+    }))
+  );
 }
 
 async function fetchJson(url: string, headers: Record<string, string>): Promise<any> {
