@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+// Build-time: pull all published posts, drop anything scheduled for the future.
+const all = await getCollection('blog');
+const now = Date.now();
+const posts = all
+  .filter((p) => !p.data.trashed && new Date(p.data.pubDate).getTime() <= now)
+  .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+---
+
+<Base title="Blog — CV Bangun Sarana Makmur" description="Artikel & berita terbaru.">
+  <h1>Blog</h1>
+  <p class="lead">Wawasan, proyek, dan pembaruan dari tim kami.</p>
+
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <a href={`/blog/${post.id}`} class="post-title">{post.data.title}</a>
+        <div class="post-meta">
+          <time datetime={new Date(post.data.pubDate).toISOString()}>
+            {new Date(post.data.pubDate).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+          {' · '}{post.data.category}
+          {post.data.tags.length > 0 && <> · {post.data.tags.join(', ')}</>}
+        </div>
+        {post.data.cover && <img src={post.data.cover} alt={post.data.title} loading="lazy" />}
+        <p>{post.data.description}</p>
+      </li>
+    ))}
+  </ul>
+
+  <style>
+    .lead { color: var(--muted); }
+    .post-list { list-style: none; padding: 0; }
+    .post-list li { padding: 1.4rem 0; border-bottom: 1px solid #e5e0d8; }
+    .post-title { font-size: 1.35rem; font-weight: 700; text-decoration: none; }
+    .post-meta { color: var(--muted); font-size: .85rem; margin: .3rem 0 .6rem; }
+    .post-list img { max-width: 100%; height: auto; border-radius: 8px; margin: .5rem 0; }
+  </style>
+</Base>

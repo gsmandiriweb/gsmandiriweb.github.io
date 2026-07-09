@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+// Latest 3 published posts for the homepage preview.
+const all = await getCollection('blog');
+const now = Date.now();
+const latest = all
+  .filter((p) => !p.data.trashed && new Date(p.data.pubDate).getTime() <= now)
+  .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
+  .slice(0, 3);
+---
+
+<Base title="CV Bangun Sarana Makmur" description="Mitra konstruksi & sarana makmur terpercaya.">
+  <section class="hero">
+    <h1>Membangun Sarana, Mewujudkan Makmur</h1>
+    <p>Solusi konstruksi dan sarana prasarana yang andal untuk bisnis dan masyarakat.</p>
+    <div class="cta">
+      <a class="btn" href="https://wa.me/628000000000">Hubungi via WhatsApp</a>
+      <a class="btn ghost" href="/kontak">Email Kami</a>
+    </div>
+  </section>
+
+  <section class="latest">
+    <h2>Artikel Terbaru</h2>
+    <ul>
+      {latest.map((post) => (
+        <li>
+          <a href={`/blog/${post.id}`}>{post.data.title}</a>
+          <span class="date">{new Date(post.data.pubDate).toLocaleDateString('id-ID', { month: 'short', day: 'numeric' })}</span>
+        </li>
+      ))}
+    </ul>
+    <a href="/blog">Lihat semua &rarr;</a>
+  </section>
+
+  <style>
+    .hero { text-align: center; padding: 3rem 0; }
+    .hero h1 { font-size: 2.4rem; margin-bottom: .5rem; }
+    .hero p { color: var(--muted); font-size: 1.1rem; }
+    .cta { margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; }
+    .btn { background: var(--accent); color: #fff; padding: .7rem 1.4rem; border-radius: 8px; text-decoration: none; }
+    .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .latest h2 { border-top: 1px solid #e5e0d8; padding-top: 1.5rem; }
+    .latest ul { list-style: none; padding: 0; }
+    .latest li { display: flex; justify-content: space-between; padding: .5rem 0; border-bottom: 1px solid #f0ece4; }
+    .latest .date { color: var(--muted); font-size: .85rem; }
+  </style>
+</Base>

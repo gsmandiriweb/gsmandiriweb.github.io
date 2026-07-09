@@ -1,0 +1,11 @@
+---
+import Base from '../../layouts/Base.astro';
+import AdminPanel from '../../components/AdminPanel.svelte';
+---
+
+<!-- Admin is a client-side Svelte 5 island. The page itself is static; the
+     interactive CMS hydrates in the browser. Kept out of nav + noindex. -->
+<Base title="Admin — CV Bangun Sarana Makmur">
+  <meta name="robots" content="noindex, nofollow" />
+  <AdminPanel client:only="svelte" />
+</Base>
