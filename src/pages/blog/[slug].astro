@@ -33,38 +33,49 @@ const dateLabel = new Date(post.data.pubDate).toLocaleDateString('id-ID', { year
   modifiedTime={modifiedISO}
   tags={post.data.tags}
 >
-  <article>
-    <p class="crumb"><a href="/blog">Blog</a> / {post.data.category}</p>
-    <h1>{post.data.title}</h1>
-    <div class="meta">
-      <time datetime={publishedISO}>{dateLabel}</time>
-      {' · '}{post.data.author}
-    </div>
-    {post.data.cover && <img class="cover" src={post.data.cover} alt={post.data.title} />}
-    <div class="prose"><Content /></div>
+  <article class="post">
+    <div class="container narrow">
+      <p class="crumb"><a href="/blog">Blog</a> / {post.data.category}</p>
+      <h1>{post.data.title}</h1>
+      <div class="meta">
+        <time datetime={publishedISO}>{dateLabel}</time>
+        {' · '}{post.data.author}
+      </div>
+      {post.data.cover && <img class="cover" src={post.data.cover} alt={post.data.title} />}
+      <div class="prose"><Content /></div>
 
-    <hr />
-    <h2>Artikel Terkait</h2>
-    <ul class="related">
-      {related.map((r) => (
-        <li><a href={`/blog/${r.id}`}>{r.data.title}</a></li>
-      ))}
-    </ul>
+      <hr />
+      <h2>Artikel terkait</h2>
+      <ul class="related">
+        {related.map((r) => (
+          <li><a href={`/blog/${r.id}`}>{r.data.title}</a></li>
+        ))}
+      </ul>
 
-    <div class="share">
-      <span>Bagikan:</span>
-      <a href={`https://wa.me/?text=${encodeURIComponent(post.data.title + ' ' + Astro.url.href)}`}>WhatsApp</a>
+      <div class="share">
+        <span>Bagikan:</span>
+        <a href={`https://wa.me/?text=${encodeURIComponent(post.data.title + ' ' + Astro.url.href)}`}>WhatsApp</a>
+      </div>
     </div>
   </article>
 
   <style>
-    .crumb { color: var(--muted); font-size: .85rem; }
-    .meta { color: var(--muted); font-size: .9rem; }
-    .cover { width: 100%; height: auto; border-radius: 10px; margin: 1rem 0; }
-    .prose { line-height: 1.75; }
-    .prose img { max-width: 100%; height: auto; }
-    .related { padding-left: 1.2rem; }
-    .share { margin-top: 1.5rem; font-size: .9rem; }
-    .share a { margin-left: .6rem; }
+    .container { max-width: 760px; margin: 0 auto; padding-inline: clamp(1rem, 4vw, 2rem); }
+    .post { padding-block: clamp(48px, 7vw, 88px); }
+    .crumb { color: var(--muted); font-size: 0.85rem; margin: 0 0 18px; }
+    .crumb a { color: var(--muted); text-decoration: none; }
+    .crumb a:hover { color: var(--bsm-red); }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.03em; line-height: 1.08; }
+    .meta { color: var(--muted); font-size: 0.9rem; margin-top: 14px; }
+    .cover { width: 100%; height: auto; border-radius: var(--radius-lg); margin: 1.5rem 0; }
+    .prose { line-height: 1.75; color: var(--ink-soft); }
+    .prose img { max-width: 100%; height: auto; border-radius: var(--radius-md); }
+    .prose h2 { color: var(--ink); letter-spacing: -0.02em; margin-top: 2rem; }
+    .related { padding-left: 1.2rem; color: var(--muted); }
+    .related a { color: var(--bsm-red); }
+    .share { margin-top: 1.5rem; font-size: 0.9rem; color: var(--muted); }
+    .share a { margin-left: 0.6rem; color: var(--bsm-red); }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    .post h2 { font-size: 1.5rem; letter-spacing: -0.02em; }
   </style>
 </Base>

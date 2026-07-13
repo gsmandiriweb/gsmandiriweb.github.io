@@ -11,32 +11,57 @@ const posts = all
 ---
 
 <Base title="Blog — CV Bangun Sarana Makmur" description="Artikel & berita terbaru.">
-  <h1>Blog</h1>
-  <p class="lead">Wawasan, proyek, dan pembaruan dari tim kami.</p>
+  <section class="section">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Blog</span>
+        <h1>Wawasan & pembaruan</h1>
+        <p class="section-intro">Catatan proyek, material, dan kabar terbaru dari tim kami.</p>
+      </header>
 
-  <ul class="post-list">
-    {posts.map((post) => (
-      <li>
-        <a href={`/blog/${post.id}`} class="post-title">{post.data.title}</a>
-        <div class="post-meta">
-          <time datetime={new Date(post.data.pubDate).toISOString()}>
-            {new Date(post.data.pubDate).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-          {' · '}{post.data.category}
-          {post.data.tags.length > 0 && <> · {post.data.tags.join(', ')}</>}
-        </div>
-        {post.data.cover && <img src={post.data.cover} alt={post.data.title} loading="lazy" />}
-        <p>{post.data.description}</p>
-      </li>
-    ))}
-  </ul>
+      <ul class="post-list">
+        {
+          posts.map((post) => (
+            <li class="post-item">
+              <a href={`/blog/${post.id}`} class="post-title">{post.data.title}</a>
+              <div class="post-meta">
+                <time datetime={new Date(post.data.pubDate).toISOString()}>
+                  {new Date(post.data.pubDate).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+                {' · '}{post.data.category}
+                {post.data.tags.length > 0 && <> · {post.data.tags.join(', ')}</>}
+              </div>
+              {post.data.cover && <img src={post.data.cover} alt={post.data.title} loading="lazy" />}
+              <p class="post-desc">{post.data.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 
   <style>
-    .lead { color: var(--muted); }
-    .post-list { list-style: none; padding: 0; }
-    .post-list li { padding: 1.4rem 0; border-bottom: 1px solid #e5e0d8; }
-    .post-title { font-size: 1.35rem; font-weight: 700; text-decoration: none; }
-    .post-meta { color: var(--muted); font-size: .85rem; margin: .3rem 0 .6rem; }
-    .post-list img { max-width: 100%; height: auto; border-radius: 8px; margin: .5rem 0; }
+    .container { max-width: var(--maxw); margin: 0 auto; padding-inline: clamp(1rem, 4vw, 2rem); }
+    .section { padding-block: clamp(56px, 8vw, 96px); }
+    .section-head { max-width: 56ch; margin-bottom: var(--space-xl); }
+    .section-head h1 { font-size: clamp(2.2rem, 4.5vw, 3.25rem); letter-spacing: -0.03em; }
+    .section-intro { color: var(--muted); font-size: 1.1rem; margin: 14px 0 0; }
+    .post-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-xl); }
+    .post-item {
+      border-top: 1px solid var(--border);
+      padding-top: var(--space-lg);
+    }
+    .post-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .post-title:hover { color: var(--bsm-red); }
+    .post-meta { color: var(--muted); font-size: 0.88rem; margin: 8px 0 12px; }
+    .post-list img { width: 100%; height: auto; border-radius: var(--radius-md); margin: 8px 0 14px; }
+    .post-desc { color: var(--muted); margin: 0; max-width: 64ch; }
   </style>
 </Base>

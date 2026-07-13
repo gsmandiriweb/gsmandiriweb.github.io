@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Ilustrasi kawat duri galvanis gulungan">
+  <rect width="800" height="500" fill="#f6f7f9"/>
+  <!-- coil -->
+  <g fill="none" stroke="#a8aeb8" stroke-width="6">
+    <ellipse cx="400" cy="250" rx="250" ry="150"/>
+    <ellipse cx="400" cy="250" rx="190" ry="112"/>
+    <ellipse cx="400" cy="250" rx="130" ry="74"/>
+    <ellipse cx="400" cy="250" rx="70" ry="38"/>
+  </g>
+  <circle cx="400" cy="250" r="10" fill="#8b929c"/>
+  <!-- barbs on the outer strands -->
+  <g stroke="#7b818b" stroke-width="5" stroke-linecap="round">
+    <path d="M168 178 l-18 -16 M168 178 l18 -16"/>
+    <path d="M232 132 l-16 -18 M232 132 l18 -16"/>
+    <path d="M400 100 l-16 -20 M400 100 l16 -20"/>
+    <path d="M568 132 l-18 -16 M568 132 l16 -18"/>
+    <path d="M632 178 l-18 -16 M632 178 l18 -16"/>
+    <path d="M168 322 l-18 16 M168 322 l18 16"/>
+    <path d="M232 368 l-16 18 M232 368 l18 16"/>
+    <path d="M400 400 l-16 20 M400 400 l16 20"/>
+    <path d="M568 368 l-18 16 M568 368 l16 18"/>
+    <path d="M632 322 l-18 16 M632 322 l18 16"/>
+  </g>
+  <!-- red accent: a single barb highlighted -->
+  <path d="M400 100 l-16 -20 M400 100 l16 -20" stroke="#e22b1e" stroke-width="5" stroke-linecap="round"/>
+  <rect x="330" y="440" width="140" height="24" rx="4" fill="#e22b1e"/>
+  <text x="400" y="457" font-family="Sora, system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">GALVANIS</text>
+</svg>

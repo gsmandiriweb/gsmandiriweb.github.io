@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1411 520" role="img" aria-label="Peta jangkauan pengiriman BSM di seluruh Indonesia, dari Sabang sampai Merauke">
+  <defs>
+    <style>
+      .land { fill: none; stroke: #1aa3b5; stroke-width: 1.4; stroke-linejoin: round; }
+      .dot { fill: #1aa3b5; stroke: #eef6f7; stroke-width: 2; }
+      .dot-ring { fill: none; stroke: oklch(70% 0.006 250); stroke-width: 1.6; opacity: 0.8; }
+      .label { font-family: 'Sora', system-ui, sans-serif; font-size: 13px; font-weight: 600; fill: #16242a; paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round; }
+      .span { fill: none; stroke: #1aa3b5; stroke-width: 2; stroke-dasharray: 5 7; opacity: 0.6; }
+    </style>
+  </defs>
+
+      <path class="span" d="M45.1 26.4 C 706.5999999999999 -3.6, 706.5999999999999 467.6, 1368.1 437.6" />
+
+      <polygon class="land" points="781.6,492.4 769,493 729.5,472.1 757.3,466.2 772.9,475.3 783.3,484.4 781.6,492.4" />
+      <polygon class="land" points="892.4,489.4 866.9,496 863.3,492.4 866,482.3 878.8,464.1 908.3,452.3 911.3,458.2 911.9,467.2 892.4,489.4" />
+      <polygon class="land" points="697.7,428.5 708.4,436.5 726.8,434 734.2,446.7 699.7,452.7 679.1,456.7 663.1,456.5 673.3,439.3 689.7,439.1 697.7,428.5" />
+      <polygon class="land" points="846.7,428.5 842.4,445 797.6,453.5 758,449.8 757.9,438.9 781.5,432.7 800.2,441.7 820,439.4 846.7,428.5" />
+      <polygon class="land" points="421.2,389.3 478.3,392.2 484.9,379.9 540.2,394.3 551,413.6 595.7,419 632.3,436.7 598.3,448.1 565.5,436.1 538.5,436.9 507.6,434.7 479.7,429.3 445.2,417.9 423.3,415 410.9,418.7 356.6,406.5 351.4,393.6 324.1,391.5 344.6,363 380.7,364.7 404.8,376.4 417.2,378.7 421.2,389.3" />
+      <polygon class="land" points="1199,372.5 1183.7,392.8 1180.8,370.3 1186.1,359.6 1192.3,349.5 1199.1,358.3 1199,372.5" />
+      <polygon class="land" points="976.2,290.4 965.1,300.3 944.5,294.8 938.7,282 968.8,280.5 976.2,290.4" />
+      <polygon class="land" points="1072.3,279.5 1083.1,302.3 1057.9,290 1033,287.5 1016.2,289.5 995.6,288.4 1002.7,272 1039.5,270.8 1072.3,279.5" />
+      <polygon class="land" points="1181.7,221.6 1190,269.8 1220.8,287.6 1245.7,256 1279.9,238.1 1306.4,238 1331.9,248.4 1354,259.1 1386,264.8 1386.5,361.9 1387,459 1360.5,434.5 1330.2,428.5 1322.9,437 1285.1,437.9 1297.8,413.7 1316.5,405.4 1308.8,373 1294.4,348 1236.7,322.8 1212.1,320.3 1167.4,292.7 1158.6,307.2 1147.1,309.8 1140.4,298.9 1140.3,286 1117.5,271.3 1149.6,260.6 1170.8,261.2 1168.4,253.3 1124.7,253.2 1112.9,235.5 1086.3,230 1073.7,215.2 1113.9,208 1129.1,198.3 1177,210.5 1181.7,221.6" />
+      <polygon class="land" points="916.4,145 892.4,174.5 870,180.3 841.4,174.4 791.7,175.9 765.7,180.2 761.4,202.8 788.1,229.3 804.2,215.8 859.8,205.6 857.3,219.4 844.3,215 831.4,232.5 805.2,244 833.4,282.2 827.9,292.5 854.7,326.9 854.5,346.4 838.6,355.2 826.9,344.7 841.3,320.3 812,331.9 804.6,323.6 808.5,312.1 787,294.6 789.2,265.6 769.3,274.6 771.8,309.4 773.1,352 754.2,356.3 741.4,347.6 749.9,320.2 745.3,291.4 732.8,291.2 723.5,270.8 735.8,251.3 740.1,227.6 755,182.7 761.3,170.4 786.6,148.3 809.9,157.1 847.5,161.2 881.7,160 911.2,138.3 916.4,145" />
+      <polygon class="land" points="1019.1,153.5 1017.6,179.6 1002.2,176.7 997.7,194.8 1009.9,210.5 1001.6,214.1 989.6,195.2 980.7,157.1 986.7,133.3 996.6,122.5 998.7,138.8 1016.3,141.4 1019.1,153.5" />
+      <polygon class="land" points="696.9,132.8 730.3,160.4 695,163.9 685.1,184.2 686.4,211.2 657.7,231.6 656.9,261.3 645.4,306.9 641.1,296.3 607.2,309.7 595.4,291.5 574.2,289.8 559.3,280.2 523.9,290.9 513,276.5 493.5,278.2 468.9,274.7 464.4,234.8 449.5,226.5 435.2,201 431,174.9 434.5,147.3 452.2,127.5 457.2,147.4 477.6,164.3 496.8,158.2 515.8,160.3 533.2,145.3 547.5,142.7 575.7,151 600,144.7 615.2,103.2 626.7,92.9 637,59 671.3,59 697.1,64 680.2,90.9 702.1,119.1 696.9,132.8" />
+      <polygon class="land" points="337.6,361.7 304.6,362.3 279.5,337.4 241.3,313 228.5,295 206,270.7 191.2,248.4 168.5,206.7 142.3,181.8 133.6,156.2 122.6,133 95.7,114.2 80.1,88.7 57.7,72 26.6,39.2 24,24 43.2,25.2 89.3,31 115.7,60.1 138.7,80.3 155.1,92.7 183.4,124.7 213.7,125.2 238.7,145.6 255.9,170.6 278.6,184.2 266.7,208.5 283.8,218.9 294.5,219.6 299.5,240.4 309.9,257 331.8,259.7 346.3,278.5 338.8,315.6 337.6,361.7" />
+
+      <g class="marker">
+        <circle class="dot" cx="544.2" cy="403.3" r="6.5" />
+        <circle class="dot-ring" cx="544.2" cy="403.3" r="9.5" />
+        <text class="label" x="560" y="389.3" text-anchor="start">Surabaya</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="368.4" cy="372" r="6.5" />
+        <circle class="dot-ring" cx="368.4" cy="372" r="9.5" />
+        <text class="label" x="383.4" y="394.0" text-anchor="start">Jakarta</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="543.3" cy="409.3" r="6.5" />
+        <circle class="dot-ring" cx="543.3" cy="409.3" r="9.5" />
+        <text class="label" x="470" y="395.3" text-anchor="start">Sidoarjo</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="540.6" cy="400.6" r="6.5" />
+        <circle class="dot-ring" cx="540.6" cy="400.6" r="9.5" />
+        <text class="label" x="648" y="386.6" text-anchor="start">Gresik</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="540.6" cy="425.1" r="6.5" />
+        <circle class="dot-ring" cx="540.6" cy="425.1" r="9.5" />
+        <text class="label" x="555.6" y="447.1" text-anchor="start">Malang</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="475.1" cy="395" r="6.5" />
+        <circle class="dot-ring" cx="475.1" cy="395" r="9.5" />
+        <text class="label" x="490.1" y="417.0" text-anchor="start">Semarang</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="473" cy="419.7" r="6.5" />
+        <circle class="dot-ring" cx="473" cy="419.7" r="9.5" />
+        <text class="label" x="488" y="441.7" text-anchor="start">Yogyakarta</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="391.3" cy="392.9" r="6.5" />
+        <circle class="dot-ring" cx="391.3" cy="392.9" r="9.5" />
+        <text class="label" x="406.3" y="414.9" text-anchor="start">Bandung</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="581.4" cy="232" r="7.5" />
+        <circle class="dot-ring" cx="581.4" cy="232" r="11" />
+        <text class="label" x="596.4" y="237.0" text-anchor="start">Kalimantan</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="775.1" cy="276.7" r="7.5" />
+        <circle class="dot-ring" cx="775.1" cy="276.7" r="11" />
+        <text class="label" x="790.1" y="281.7" text-anchor="start">Sulawesi</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="1371.1" cy="321.4" r="7.5" />
+        <circle class="dot-ring" cx="1371.1" cy="321.4" r="11" />
+        <text class="label" x="1386.1" y="326.4" text-anchor="start">Papua</text>
+      </g>
+      <g class="marker">
+        <circle class="dot" cx="194.1" cy="202.2" r="7.5" />
+        <circle class="dot-ring" cx="194.1" cy="202.2" r="11" />
+        <text class="label" x="209.1" y="207.2" text-anchor="start">Sumatera</text>
+      </g>
+
+</svg>

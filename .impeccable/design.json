@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-12T00:00:00Z",
+  "title": "Design System: CV Bangun Sarana Makmur — Web",
+  "extensions": {
+    "colorMeta": {
+      "primary":      { "role": "primary", "displayName": "BSM Red",        "canonical": "oklch(45% 0.18 27)",  "tonalRamp": ["oklch(15% 0.10 27)","oklch(25% 0.14 27)","oklch(35% 0.17 27)","oklch(45% 0.18 27)","oklch(55% 0.17 27)","oklch(65% 0.15 27)","oklch(80% 0.10 27)","oklch(95% 0.04 27)"] },
+      "primary-deep": { "role": "primary", "displayName": "BSM Red Deep",   "canonical": "oklch(35% 0.16 27)",  "tonalRamp": ["oklch(15% 0.09 27)","oklch(25% 0.13 27)","oklch(35% 0.16 27)","oklch(45% 0.16 27)","oklch(55% 0.15 27)","oklch(65% 0.13 27)","oklch(80% 0.09 27)","oklch(95% 0.04 27)"] },
+      "ink":          { "role": "neutral", "displayName": "Graphite Ink",   "canonical": "oklch(22% 0.012 250)", "tonalRamp": ["oklch(15% 0.010 250)","oklch(22% 0.012 250)","oklch(30% 0.012 250)","oklch(40% 0.012 250)","oklch(50% 0.012 250)","oklch(62% 0.012 250)","oklch(78% 0.010 250)","oklch(95% 0.005 250)"] },
+      "muted":        { "role": "neutral", "displayName": "Slate Muted",    "canonical": "oklch(45% 0.012 250)", "tonalRamp": ["oklch(30% 0.012 250)","oklch(38% 0.012 250)","oklch(45% 0.012 250)","oklch(55% 0.012 250)","oklch(65% 0.012 250)","oklch(74% 0.010 250)","oklch(84% 0.008 250)","oklch(95% 0.005 250)"] },
+      "bg":           { "role": "neutral", "displayName": "Pure White",     "canonical": "oklch(100% 0 250)",    "tonalRamp": ["oklch(80% 0.005 250)","oklch(86% 0.006 250)","oklch(91% 0.006 250)","oklch(95% 0.005 250)","oklch(97% 0.004 250)","oklch(98% 0.003 250)","oklch(99% 0.002 250)","oklch(100% 0 250)"] },
+      "surface":      { "role": "neutral", "displayName": "Cool Mist",      "canonical": "oklch(97% 0.004 250)", "tonalRamp": ["oklch(80% 0.005 250)","oklch(86% 0.006 250)","oklch(91% 0.006 250)","oklch(94% 0.005 250)","oklch(96% 0.004 250)","oklch(97% 0.004 250)","oklch(98% 0.003 250)","oklch(99% 0.002 250)"] },
+      "border":       { "role": "neutral", "displayName": "Hairline",       "canonical": "oklch(91% 0.006 250)", "tonalRamp": ["oklch(70% 0.008 250)","oklch(78% 0.008 250)","oklch(84% 0.007 250)","oklch(88% 0.007 250)","oklch(91% 0.006 250)","oklch(94% 0.005 250)","oklch(97% 0.004 250)","oklch(99% 0.002 250)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Sora", "purpose": "Hero and section statements; engineered, infrastructure-grade." },
+      "headline": { "displayName": "Sora", "purpose": "h2 sub-section titles." },
+      "title": { "displayName": "Inter", "purpose": "Card and block titles (h3)." },
+      "body": { "displayName": "Inter", "purpose": "All running Bahasa text; legible at 30+ reader age." },
+      "label": { "displayName": "Inter", "purpose": "CTAs, product tags, table heads — never a per-section eyebrow." }
+    },
+    "shadows": [
+      { "name": "ambient-low", "value": "0 1px 2px rgba(27,30,35,0.05), 0 6px 18px rgba(27,30,35,0.06)", "purpose": "Resting cards and sticky header separation." },
+      { "name": "ambient-lift", "value": "0 4px 12px rgba(27,30,35,0.08), 0 16px 40px rgba(27,30,35,0.10)", "purpose": "Hover/focus raise on cards and primary buttons." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default easing for state transitions and reveals." },
+      { "name": "dur-fast", "value": "200ms", "purpose": "Hover/focus feedback." },
+      { "name": "dur-base", "value": "320ms", "purpose": "Reveal and crossfade." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single strongest signal on the page — CTAs like 'Minta Penawaran' / 'Hubungi via WhatsApp'.",
+      "html": "<button class=\"ds-btn-primary\">Minta Penawaran</button>",
+      "css": ".ds-btn-primary { background: #b3261e; color: #ffffff; font-family: Inter, system-ui, sans-serif; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; transition: background 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { background: #8f1d17; box-shadow: 0 4px 12px rgba(27,30,35,0.08), 0 16px 40px rgba(27,30,35,0.10); } .ds-btn-primary:focus-visible { outline: 2px solid #b3261e; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action beside a primary CTA (e.g. 'Email Kami').",
+      "html": "<button class=\"ds-btn-ghost\">Email Kami</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #b3261e; font-family: Inter, system-ui, sans-serif; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; padding: 13px 27px; border: 1px solid #b3261e; border-radius: 10px; cursor: pointer; transition: background 200ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-ghost:hover { background: #f5f7fa; } .ds-btn-ghost:focus-visible { outline: 2px solid #b3261e; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Project inquiry field; placeholder uses Slate Muted to clear 4.5:1.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Nama proyek / pesan...\" />",
+      "css": ".ds-input { background: #ffffff; color: #1b1e23; font-family: Inter, system-ui, sans-serif; font-size: 1.0625rem; padding: 14px 16px; border: 1px solid #e3e7ee; border-radius: 8px; transition: border-color 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms cubic-bezier(0.22,1,0.36,1); } .ds-input::placeholder { color: #565d68; } .ds-input:focus { outline: none; border-color: #b3261e; box-shadow: 0 0 0 3px rgba(179,38,30,0.15); }"
+    },
+    {
+      "name": "Top Navigation",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Sticky white header; active route in BSM Red; CTA stays visible on mobile.",
+      "html": "<header class=\"ds-nav\"><span class=\"ds-brand\">CV Bangun Sarana Makmur</span><nav class=\"ds-nav-links\"><a class=\"is-active\" href=\"#\">Beranda</a><a href=\"#\">Produk</a><a href=\"#\">Jangkauan</a><a href=\"#\">Kontak</a></nav><button class=\"ds-btn-primary ds-nav-cta\">WhatsApp</button></header>",
+      "css": ".ds-nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #ffffff; border-bottom: 1px solid #e3e7ee; padding: 14px 24px; } .ds-brand { font-family: Sora, system-ui, sans-serif; font-weight: 600; color: #1b1e23; } .ds-nav-links { display: flex; gap: 20px; } .ds-nav-links a { font-family: Inter, system-ui, sans-serif; color: #1b1e23; text-decoration: none; } .ds-nav-links a.is-active, .ds-nav-links a:hover { color: #b3261e; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Catalog workhorse for BRC / Kawat Duri / Guard Rail. Flat at rest, Ambient Lift on hover.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-media\"></div><h3 class=\"ds-card-title\">Pagar BRC Hot-Dip (HD)</h3><p class=\"ds-card-spec\">Standar SNI · Lapisan Anti Karat HDG</p><button class=\"ds-btn-primary\">Minta Penawaran</button></article>",
+      "css": ".ds-card { background: #f5f7fa; border: 1px solid #e3e7ee; border-radius: 14px; padding: 24px; transition: box-shadow 320ms cubic-bezier(0.22,1,0.36,1); } .ds-card:hover { box-shadow: 0 4px 12px rgba(27,30,35,0.08), 0 16px 40px rgba(27,30,35,0.10); } .ds-card-media { background: #e3e7ee; border-radius: 10px; aspect-ratio: 16 / 10; margin-bottom: 16px; } .ds-card-title { font-family: Sora, system-ui, sans-serif; font-weight: 600; font-size: 1.25rem; color: #1b1e23; margin: 0 0 4px; } .ds-card-spec { font-family: Inter, system-ui, sans-serif; color: #565d68; font-size: 0.9375rem; margin: 0 0 16px; }"
+    },
+    {
+      "name": "Chip / Tag",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Product category and spec tags (e.g. 'SNI', 'HDG Anti-Karat'). No colored side stripe.",
+      "html": "<span class=\"ds-chip\">SNI</span>",
+      "css": ".ds-chip { display: inline-block; background: #f5f7fa; color: #1b1e23; font-family: Inter, system-ui, sans-serif; font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 6px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Trusted Infrastructure Backbone",
+    "overview": "BSM is a construction-materials distributor that pools products from multiple factories into a single, reliable one-stop source for contractors and projects. The visual system feels like civil infrastructure itself: solid, exact, quietly confident — the surface a procurement officer trusts on sight. Cool graphite and pure white carry the page; brand red is a precise signal, not decoration. Soft layered elevation conveys depth without weight. The system rejects the legacy cream-and-serif template and any flashy agency aesthetic, and is engineered for a 30+ B2B audience that scans for proof before it calls.",
+    "keyCharacteristics": [
+      "Cool graphite ink on pure white; high-contrast, easy on the eye, legibility-first.",
+      "Brand red used as a deliberate signal (CTAs, key marks), never splashed as a wash.",
+      "Soft layered elevation; flat at rest, depth on hover/focus.",
+      "Real-world proof over invented polish: SNI-standard products, Surabaya-rooted 10+ years, nationwide Sabang–Merauke delivery.",
+      "Sora display + Inter body replaces the old serif; Bahasa copy stays clear and direct."
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Brand red appears on ≤10% of any screen; its rarity makes a CTA unmistakable.", "section": "colors" },
+      { "name": "The Cool-Only Rule", "body": "Every neutral leans cool (graphite/blue undertone). No warm cream, beige, or paper.", "section": "colors" },
+      { "name": "The No-Eyebrow Rule", "body": "No tiny uppercase tracked kicker above every section heading; labels earn placement only on real UI.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Components rest flat with a hairline; shadows appear only on state change.", "section": "elevation" }
+    ],
+    "dos": [
+      "Keep body text in Graphite Ink and secondary text in Slate Muted that clears 4.5:1.",
+      "Use BSM Red sparingly as the one signal: primary CTAs, active nav, key marks, links.",
+      "Cap prose at ~70ch and hero display at ≤4rem for a 30+ B2B reader.",
+      "Let depth come from soft layered shadows on hover/focus; keep resting surfaces flat.",
+      "Write direct, proof-led Bahasa copy; improvise phrasing over the old site's literal wording.",
+      "Use unique AI-generated project visuals if needed, distinct from generic stock."
+    ],
+    "donts": [
+      "Use the generic 'AI cream + serif company-profile template' — the legacy baseline is the anti-reference.",
+      "Use flashy, over-designed agency aesthetics that sacrifice readability for effect.",
+      "Use stock-photo sameness; AI imagery must be unique and not interchangeable.",
+      "Place a tiny uppercase tracked eyebrow above every section heading.",
+      "Use a colored left/right border stripe >1px as a card or callout accent.",
+      "Use gradient text, glassmorphism, or pill-rounded cards (>14px radius).",
+      "Gate content visibility on a scroll/load animation.",
+      "Run motion without a prefers-reduced-motion alternative.",
+      "Introduce a second chromatic accent beyond graphite/white/red."
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Ilustrasi pagar BRC besi beton rajangan">
+  <defs>
+    <pattern id="brcMesh" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M0 0H40M0 0V40" stroke="#b3b9c2" stroke-width="5"/>
+      <circle cx="20" cy="20" r="4.5" fill="#9aa1ac"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="#f6f7f9"/>
+  <rect x="70" y="70" width="660" height="360" fill="url(#brcMesh)"/>
+  <rect x="70" y="70" width="660" height="360" fill="none" stroke="#9aa1ac" stroke-width="6"/>
+  <!-- top & bottom rails -->
+  <rect x="62" y="60" width="676" height="16" rx="3" fill="#878d97"/>
+  <rect x="62" y="424" width="676" height="16" rx="3" fill="#878d97"/>
+  <!-- posts -->
+  <rect x="60" y="50" width="16" height="400" rx="3" fill="#7b818b"/>
+  <rect x="724" y="50" width="16" height="400" rx="3" fill="#7b818b"/>
+  <!-- red SNI tag -->
+  <rect x="86" y="92" width="64" height="22" rx="4" fill="#e22b1e"/>
+  <text x="118" y="108" font-family="Sora, system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">SNI</text>
+</svg>

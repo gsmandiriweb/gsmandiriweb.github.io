@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Ilustrasi guard rail pagar pengaman jalan">
+  <rect width="800" height="500" fill="#f6f7f9"/>
+  <rect x="0" y="380" width="800" height="120" fill="#e8eaf0"/>
+  <line x1="0" y1="380" x2="800" y2="380" stroke="#d3d7dd" stroke-width="2"/>
+  <!-- W-beam rail -->
+  <path d="M40 250 q30 -22 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 L760 330 q-30 22 -60 0 t-60 0 t-60 0 t-60 0 t-60 0 t-60 0 t-60 0 t-60 0 t-60 0 t-60 0 t-60 0 t-60 0 Z" fill="#c6cbd3" stroke="#a7adb7" stroke-width="2"/>
+  <line x1="40" y1="290" x2="760" y2="290" stroke="#a7adb7" stroke-width="2"/>
+  <!-- posts -->
+  <g fill="#8b929c">
+    <rect x="116" y="320" width="14" height="110" rx="2"/>
+    <rect x="296" y="320" width="14" height="110" rx="2"/>
+    <rect x="476" y="320" width="14" height="110" rx="2"/>
+    <rect x="656" y="320" width="14" height="110" rx="2"/>
+  </g>
+  <!-- red reflector dot -->
+  <circle cx="123" cy="270" r="6" fill="#e22b1e"/>
+  <circle cx="303" cy="270" r="6" fill="#e22b1e"/>
+  <circle cx="483" cy="270" r="6" fill="#e22b1e"/>
+  <circle cx="663" cy="270" r="6" fill="#e22b1e"/>
+  <rect x="320" y="60" width="160" height="24" rx="4" fill="#e22b1e"/>
+  <text x="400" y="77" font-family="Sora, system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">SNI JALAN</text>
+</svg>
