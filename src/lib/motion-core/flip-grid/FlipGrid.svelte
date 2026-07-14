@@ -1,0 +1,135 @@
+<script lang="ts">
+	import { onMount } from "svelte";
+	import { gsap } from "gsap";
+	import { Flip } from "gsap/Flip";
+	import { registerPluginOnce } from "../helpers/gsap";
+	import { cn } from "../utils/cn";
+
+	import type { Snippet } from "svelte";
+
+	interface Props {
+		/**
+		 * Snippet to render the grid items.
+		 */
+		children?: Snippet;
+		/**
+		 * Additional CSS classes for the container.
+		 */
+		class?: string;
+		/**
+		 * Animation duration in seconds.
+		 * @default 0.5
+		 */
+		duration?: number;
+		/**
+		 * Animation easing function.
+		 * @default "power2.inOut"
+		 */
+		ease?: string;
+		/**
+		 * Stagger delay between items in seconds.
+		 * @default 0
+		 */
+		stagger?: number;
+		/**
+		 * Number of columns for the grid.
+		 */
+		columns?: number | string;
+		/**
+		 * Additional inline styles.
+		 */
+		style?: string;
+		[key: string]: unknown;
+	}
+
+	let {
+		children,
+		class: className = undefined,
+		duration = 0.5,
+		ease = "power2.inOut",
+		stagger = 0,
+		columns = undefined,
+		style = undefined,
+		...props
+	}: Props = $props();
+
+	let container: HTMLElement | undefined;
+	let state: Flip.FlipState | null = null;
+
+	const attachContainer = (node: HTMLElement) => {
+		container = node;
+		return () => {
+			if (container === node) {
+				container = undefined;
+			}
+		};
+	};
+
+	let computedStyle = $derived.by(() => {
+		const baseStyle = style || "";
+		if (columns) {
+			const colStyle = `grid-template-columns: repeat(${columns}, minmax(0, 1fr))`;
+			return baseStyle ? `${baseStyle}; ${colStyle}` : colStyle;
+		}
+		return baseStyle;
+	});
+
+	onMount(() => {
+		registerPluginOnce(Flip);
+	});
+
+	$effect.pre(() => {
+		void className;
+		void computedStyle;
+
+		if (container) {
+			const items = container.querySelectorAll(".flip-grid-item");
+			if (items.length > 0) {
+				state = Flip.getState([...items, container]);
+			}
+		}
+	});
+
+	$effect(() => {
+		void className;
+		void computedStyle;
+
+		if (state && container) {
+			const flipState = state;
+			const currentContainer = container;
+			const items = currentContainer.querySelectorAll(".flip-grid-item");
+
+			const ctx = gsap.context(() => {
+				Flip.from(flipState, {
+					targets: [...items, currentContainer],
+					duration,
+					ease,
+					stagger,
+					absolute: ".flip-grid-item",
+					onEnter: (elements) => {
+						gsap.fromTo(
+							elements,
+							{ opacity: 0, scale: 0 },
+							{ opacity: 1, scale: 1, duration, ease },
+						);
+					},
+					onLeave: (elements) => {
+						gsap.to(elements, { opacity: 0, scale: 0, duration, ease });
+					},
+				});
+			}, currentContainer);
+
+			state = null;
+			return () => ctx.revert();
+		}
+	});
+</script>
+
+<div
+	{@attach attachContainer}
+	class={cn("relative grid", className)}
+	style={computedStyle}
+	{...props}
+>
+	{@render children?.()}
+</div>

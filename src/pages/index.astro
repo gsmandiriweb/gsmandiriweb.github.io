@@ -1,6 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import { waLink as wa, EMAIL } from '../config/contact';
+import {
+  Magnetic, SplitReveal, Halo, TextLoop, MacosDock, StackingWords,
+  Marquee, SplitHover, FlipGrid, WeightWave, Globe, InteractiveGrid,
+} from '../lib/motion-core';
 
 const all = await getCollection('blog');
 const now = Date.now();
@@ -8,8 +13,6 @@ const latest = all
   .filter((p) => !p.data.trashed && new Date(p.data.pubDate).getTime() <= now)
   .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
   .slice(0, 3);
-
-const wa = (msg: string) => `https://wa.me/628000000000?text=${encodeURIComponent(msg)}`;
 
 const products = [
   {
@@ -61,6 +64,37 @@ const regions = [
 
 const factories = ['Pabrik BRC', 'Pabrik Kawat', 'Pabrik Rail'];
 
+// Nationwide coverage markers for the Motion Core Globe — real Indonesian
+// cities [lat, lon], Sabang → Merauke. Light-teal pins on a teal atmosphere.
+const cities = [
+  { location: [5.89, 95.32] as [number, number], color: '#aef4fb', size: 0.07, label: 'Sabang' },
+  { location: [3.59, 98.67] as [number, number], color: '#aef4fb', size: 0.06, label: 'Medan' },
+  { location: [-0.95, 100.35] as [number, number], color: '#aef4fb', size: 0.06, label: 'Padang' },
+  { location: [-2.99, 104.76] as [number, number], color: '#aef4fb', size: 0.06, label: 'Palembang' },
+  { location: [-6.21, 106.85] as [number, number], color: '#aef4fb', size: 0.07, label: 'Jakarta' },
+  { location: [-6.91, 107.61] as [number, number], color: '#aef4fb', size: 0.06, label: 'Bandung' },
+  { location: [-6.99, 110.42] as [number, number], color: '#aef4fb', size: 0.06, label: 'Semarang' },
+  { location: [-7.8, 110.36] as [number, number], color: '#aef4fb', size: 0.06, label: 'Yogyakarta' },
+  { location: [-7.26, 112.75] as [number, number], color: '#aef4fb', size: 0.07, label: 'Surabaya' },
+  { location: [-3.32, 114.59] as [number, number], color: '#aef4fb', size: 0.06, label: 'Banjarmasin' },
+  { location: [-0.03, 109.33] as [number, number], color: '#aef4fb', size: 0.06, label: 'Pontianak' },
+  { location: [-5.15, 119.43] as [number, number], color: '#aef4fb', size: 0.07, label: 'Makassar' },
+  { location: [-8.65, 115.22] as [number, number], color: '#aef4fb', size: 0.06, label: 'Denpasar' },
+  { location: [-10.17, 123.58] as [number, number], color: '#aef4fb', size: 0.06, label: 'Kupang' },
+  { location: [1.49, 124.85] as [number, number], color: '#aef4fb', size: 0.06, label: 'Manado' },
+  { location: [-3.7, 128.18] as [number, number], color: '#aef4fb', size: 0.06, label: 'Ambon' },
+  { location: [-2.53, 140.72] as [number, number], color: '#aef4fb', size: 0.07, label: 'Jayapura' },
+  { location: [-8.47, 140.4] as [number, number], color: '#aef4fb', size: 0.07, label: 'Merauke' },
+];
+
+// One-stop dock — magnetic product shortcuts (Motion Core MacosDock).
+const dockItems = [
+  { src: '/icons/pagar-brc.svg', alt: 'Pagar BRC', label: 'Pagar BRC', href: '#produk' },
+  { src: '/icons/kawat-duri.svg', alt: 'Kawat Duri', label: 'Kawat Duri', href: '#produk' },
+  { src: '/icons/guard-rail.svg', alt: 'Guard Rail', label: 'Guard Rail', href: '#produk' },
+  { src: '/icons/whatsapp.svg', alt: 'WhatsApp', label: 'WhatsApp', href: wa('Halo BSM, saya ingin minta penawaran material proyek.') },
+];
+
 // Curated gallery from the real site photos.
 const gallery = [
   '/photos/IMG_4077.webp',
@@ -81,18 +115,45 @@ const gallery = [
   <!-- ============================ HERO ============================ -->
   <section class="hero">
     <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-halo" aria-hidden="true">
+      <Halo
+        client:visible
+        scale={1.1}
+        rotationSpeed={0.35}
+        backgroundColor="#0b1a1f"
+        sunZ={1}
+        intensity={0.9}
+      />
+    </div>
     <div class="container hero-grid">
       <div class="hero-copy reveal">
         <span class="eyebrow">Distributor Material Konstruksi</span>
-        <h1>Satu <span class="hl">sumber</span> untuk kebutuhan material proyek Anda</h1>
+        <span class="hero-tagline">
+          Solusi untuk
+          <TextLoop
+            client:visible
+            class="hero-tagline-loop"
+            texts={['pagar proyek', 'kawat duri', 'guard rail', 'kebutuhan baja']}
+            interval={2200}
+          />
+        </span>
+        <h1>
+          <SplitReveal mode="lines" client:load>
+            Satu <span class="hl">sumber</span> untuk kebutuhan material proyek Anda
+          </SplitReveal>
+        </h1>
         <p class="hero-lead">
           Kami menampung besi BRC, kawat duri, dan guard rail dari beberapa pabrik menjadi
           <strong>satu suplai one-stop</strong> untuk kontraktor dan proyek di seluruh Indonesia.
         </p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href={wa('Halo BSM, saya ingin minta penawaran untuk material proyek.')}>
-            Hubungi via WhatsApp
-          </a>
+          <Magnetic duration={0.6} ease="power3.out" client:load>
+            <SplitHover client:visible>
+              <a class="btn btn-primary" href={wa('Halo BSM, saya ingin minta penawaran untuk material proyek.')}>
+                Hubungi via WhatsApp
+              </a>
+            </SplitHover>
+          </Magnetic>
           <a class="btn btn-ghost" href="#produk">Lihat produk</a>
         </div>
         <ul class="hero-stats">
@@ -100,15 +161,27 @@ const gallery = [
           <li><span class="stat-num">SNI</span><span class="stat-label">Terstandarisasi</span></li>
           <li><span class="stat-num">S–M</span><span class="stat-label">Sabang–Merauke</span></li>
         </ul>
+        <div class="hero-dock" aria-label="Pintasan produk BSM">
+          <MacosDock client:visible items={dockItems} baseWidth={3.4} magnification={1.7} distance={2.4} />
+        </div>
       </div>
 
       <div class="hero-media reveal">
-        <!-- Real site photo. three.js low-poly accent layers on top after load;
-             SVG/gradient poster is the no-JS + reduced-motion fallback. -->
+        <!-- Real site photo with a mouse-reactive grid shader (motion-core).
+             Reduced-motion users get the plain photo; the shader only mounts
+             when motion is allowed. -->
         <img
           src="/photos/IMG_4077.webp"
           alt="Proyek konstruksi BSM: material pagar dan struktur baja di lokasi"
           width="1600" height="1067" loading="eager" decoding="async"
+        />
+        <InteractiveGrid
+          client:visible
+          class="hero-grid-shader"
+          image="/photos/IMG_4077.webp"
+          grid={18}
+          mouseSize={0.16}
+          strength={0.28}
         />
         <span class="hero-stamp">Satu Sumber · One-Stop</span>
       </div>
@@ -119,7 +192,9 @@ const gallery = [
   <section class="proof">
     <div class="proof-inner">
       <p class="proof-lead">
-        <strong>Terpercaya</strong> untuk proyek &amp; instansi pemerintah di seluruh Indonesia.
+        <WeightWave client:visible baseWeight={380} hoverWeight={780} influenceRadius={4}>
+          <strong>Terpercaya</strong> untuk proyek &amp; instansi pemerintah di seluruh Indonesia.
+        </WeightWave>
       </p>
       <ul class="proof-facts">
         <li><span class="fact-mark" aria-hidden="true"></span>10+ tahun</li>
@@ -136,7 +211,7 @@ const gallery = [
     <div class="container">
       <header class="section-head reveal">
         <span class="eyebrow">Produk Inti</span>
-        <h2>Tiga material, satu pesanan</h2>
+        <h2><StackingWords client:load>Three materials, one order</StackingWords></h2>
         <p class="section-intro">
           Ditarik langsung dari pabrik dan dikirim sebagai satu pengiriman ke lokasi proyek Anda.
         </p>
@@ -170,7 +245,7 @@ const gallery = [
     <div class="container">
       <header class="section-head reveal">
         <span class="eyebrow">Satu Atap</span>
-        <h2>Beberapa pabrik. Satu sumber suplai.</h2>
+        <h2><StackingWords client:load>Several factories. One supply.</StackingWords></h2>
         <p class="section-intro">
           Pabrik tidak menjual eceran. BSM menggabungkan beberapa item sejenis menjadi satu
           pasokan andal — Anda tak perlu menghubungi pabrik demi pabrik.
@@ -187,7 +262,7 @@ const gallery = [
           </ul>
         </div>
         <div class="flow-arrow" aria-hidden="true">
-          <span class="flow-core">BSM</span>
+          <span class="flow-core">BSM<span class="flow-ring"></span></span>
         </div>
         <div class="flow-col">
           <p class="flow-label">Untuk Anda</p>
@@ -218,24 +293,69 @@ const gallery = [
     <div class="container">
       <header class="section-head reveal">
         <span class="eyebrow">Jangkauan</span>
-        <h2>Dari Sabang sampai Merauke</h2>
+        <h2><StackingWords client:load>Dari Sabang sampai Merauke</StackingWords></h2>
         <p class="section-intro">
           BSM melayani pengadaan material proyek di seluruh nusantara — bukan hanya Jawa.
-          Satu mitra untuk lokasi proyek di Sumatera, Jawa, Kalimantan, Sulawesi, hingga Papua.
+          Titik-titik di bawah menandai kota yang telah menjadi mitra pengiriman kami,
+          dari ujung barat hingga timur Indonesia.
         </p>
       </header>
       <div class="coverage-grid reveal">
-        <div class="map-wrap">
-          <img src="/images/indonesia-map.svg" alt="Peta jangkauan pengiriman BSM di seluruh Indonesia, dari Sabang sampai Merauke" width="1411" height="520" loading="lazy" decoding="async" />
+        <div class="globe-stage">
+          <!-- Robust default: the de-cluttered Indonesia map, inlined so it
+               always renders (no SVG-via-img network/font dependency). -->
+          <svg
+            class="globe-fallback"
+            viewBox="0 0 1411 520"
+            role="img"
+            aria-label="Peta jangkauan pengiriman BSM di seluruh Indonesia, dari Sabang sampai Merauke"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g class="map-land">
+              <path d="M781.6,492.4 769,493 729.5,472.1 757.3,466.2 772.9,475.3 783.3,484.4 Z" />
+              <path d="M892.4,489.4 866.9,496 863.3,492.4 866,482.3 878.8,464.1 908.3,452.3 911.3,458.2 911.9,467.2 Z" />
+              <path d="M697.7,428.5 708.4,436.5 726.8,434 734.2,446.7 699.7,452.7 679.1,456.7 663.1,456.5 673.3,439.3 689.7,439.1 Z" />
+              <path d="M846.7,428.5 842.4,445 797.6,453.5 758,449.8 757.9,438.9 781.5,432.7 800.2,441.7 820,439.4 Z" />
+              <path d="M421.2,389.3 478.3,392.2 484.9,379.9 540.2,394.3 551,413.6 595.7,419 632.3,436.7 598.3,448.1 565.5,436.1 538.5,436.9 507.6,434.7 479.7,429.3 445.2,417.9 423.3,415 410.9,418.7 356.6,406.5 351.4,393.6 324.1,391.5 344.6,363 380.7,364.7 404.8,376.4 417.2,378.7 Z" />
+              <path d="M1199,372.5 1183.7,392.8 1180.8,370.3 1186.1,359.6 1192.3,349.5 1199.1,358.3 Z" />
+              <path d="M976.2,290.4 965.1,300.3 944.5,294.8 938.7,282 968.8,280.5 Z" />
+              <path d="M1072.3,279.5 1083.1,302.3 1057.9,290 1033,287.5 1016.2,289.5 995.6,288.4 1002.7,272 1039.5,270.8 Z" />
+              <path d="M1181.7,221.6 1190,269.8 1220.8,287.6 1245.7,256 1279.9,238.1 1306.4,238 1331.9,248.4 1354,259.1 1386,264.8 1386.5,361.9 1387,459 1360.5,434.5 1330.2,428.5 1322.9,437 1285.1,437.9 1297.8,413.7 1316.5,405.4 1308.8,373 1294.4,348 1236.7,322.8 1212.1,320.3 1167.4,292.7 1158.6,307.2 1147.1,309.8 1140.4,298.9 1140.3,286 1117.5,271.3 1149.6,260.6 1170.8,261.2 1168.4,253.3 1124.7,253.2 1112.9,235.5 1086.3,230 1073.7,215.2 1113.9,208 1129.1,198.3 1177,210.5 Z" />
+              <path d="M916.4,145 892.4,174.5 870,180.3 841.4,174.4 791.7,175.9 765.7,180.2 761.4,202.8 788.1,229.3 804.2,215.8 859.8,205.6 857.3,219.4 844.3,215 831.4,232.5 805.2,244 833.4,282.2 827.9,292.5 854.7,326.9 854.5,346.4 838.6,355.2 826.9,344.7 841.3,320.3 812,331.9 804.6,323.6 808.5,312.1 787,294.6 789.2,265.6 769.3,274.6 771.8,309.4 773.1,352 754.2,356.3 741.4,347.6 749.9,320.2 745.3,291.4 732.8,291.2 723.5,270.8 735.8,251.3 740.1,227.6 755,182.7 761.3,170.4 786.6,148.3 809.9,157.1 847.5,161.2 881.7,160 911.2,138.3 Z" />
+              <path d="M1019.1,153.5 1017.6,179.6 1002.2,176.7 997.7,194.8 1009.9,210.5 1001.6,214.1 989.6,195.2 980.7,157.1 986.7,133.3 996.6,122.5 998.7,138.8 1016.3,141.4 Z" />
+              <path d="M696.9,132.8 730.3,160.4 695,163.9 685.1,184.2 686.4,211.2 657.7,231.6 656.9,261.3 645.4,306.9 641.1,296.3 607.2,309.7 595.4,291.5 574.2,289.8 559.3,280.2 523.9,290.9 513,276.5 493.5,278.2 468.9,274.7 464.4,234.8 449.5,226.5 435.2,201 431,174.9 434.5,147.3 452.2,127.5 457.2,147.4 477.6,164.3 496.8,158.2 515.8,160.3 533.2,145.3 547.5,142.7 575.7,151 600,144.7 615.2,103.2 626.7,92.9 637,59 671.3,59 697.1,64 680.2,90.9 702.1,119.1 Z" />
+              <path d="M337.6,361.7 304.6,362.3 279.5,337.4 241.3,313 228.5,295 206,270.7 191.2,248.4 168.5,206.7 142.3,181.8 133.6,156.2 122.6,133 95.7,114.2 80.1,88.7 57.7,72 26.6,39.2 24,24 43.2,25.2 89.3,31 115.7,60.1 138.7,80.3 155.1,92.7 183.4,124.7 213.7,125.2 238.7,145.6 255.9,170.6 278.6,184.2 266.7,208.5 283.8,218.9 294.5,219.6 299.5,240.4 309.9,257 331.8,259.7 346.3,278.5 338.8,315.6 Z" />
+            </g>
+            <g class="map-dot">
+              <circle cx="544.2" cy="403.3" r="6.5" /><circle cx="368.4" cy="372" r="6.5" /><circle cx="543.3" cy="409.3" r="6.5" /><circle cx="540.6" cy="400.6" r="6.5" /><circle cx="540.6" cy="425.1" r="6.5" /><circle cx="475.1" cy="395" r="6.5" /><circle cx="473" cy="419.7" r="6.5" /><circle cx="391.3" cy="392.9" r="6.5" /><circle cx="581.4" cy="232" r="7.5" /><circle cx="775.1" cy="276.7" r="7.5" /><circle cx="1371.1" cy="321.4" r="7.5" /><circle cx="194.1" cy="202.2" r="7.5" />
+            </g>
+            <g class="map-ring">
+              <circle cx="544.2" cy="403.3" r="9.5" /><circle cx="368.4" cy="372" r="9.5" /><circle cx="543.3" cy="409.3" r="9.5" /><circle cx="540.6" cy="400.6" r="9.5" /><circle cx="540.6" cy="425.1" r="9.5" /><circle cx="475.1" cy="395" r="9.5" /><circle cx="473" cy="419.7" r="9.5" /><circle cx="391.3" cy="392.9" r="9.5" /><circle cx="581.4" cy="232" r="11" /><circle cx="775.1" cy="276.7" r="11" /><circle cx="1371.1" cy="321.4" r="11" /><circle cx="194.1" cy="202.2" r="11" />
+            </g>
+          </svg>
+          <!-- Motion Core Globe: rotating coverage with city markers.
+              Progressive enhancement — revealed only when its canvas draws. -->
+          <div class="globe-wrap" aria-hidden="true">
+            <Globe
+              client:visible
+              markers={cities}
+              landPointColor="#6fcfd8"
+              pointCount={14000}
+              pointSize={0.06}
+              autoRotate={true}
+              fresnelConfig={{ color: '#17181A', rimColor: '#19bcc9', rimPower: 6, rimIntensity: 1.6 }}
+              atmosphereConfig={{ color: '#19bcc9', scale: 1.18, power: 12, coefficient: 0.9, intensity: 1.4 }}
+            />
+          </div>
         </div>
       </div>
     </div>
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        {[...regions, ...regions, ...regions].map((r) => (
+    <div class="marquee coverage-marquee" aria-hidden="true">
+      <Marquee client:visible gap={40} duration={26} repeat={4}>
+        {regions.map((r) => (
           <span class="marquee-item">{r}</span>
         ))}
-      </div>
+      </Marquee>
     </div>
   </section>
 
@@ -245,18 +365,18 @@ const gallery = [
     <div class="container">
       <header class="section-head reveal">
         <span class="eyebrow">Galeri Proyek</span>
-        <h2>Material BSM di lapangan</h2>
+        <h2><StackingWords client:load>BSM materials on site</StackingWords></h2>
         <p class="section-intro">Dokumentasi langsung dari proyek dan lokasi pengiriman kami di seluruh Indonesia.</p>
       </header>
-      <ul class="gallery-grid stagger">
+      <FlipGrid client:visible columns={4} class="gallery-grid" duration={0.6}>
         {
-          gallery.map((src) => (
-            <li class="gallery-item reveal">
+          gallery.map((src, i) => (
+            <li class="gallery-item gallery-reveal" style={`--i:${i}`}>
               <img src={src} alt="Dokumentasi proyek BSM" width="800" height="600" loading="lazy" decoding="async" />
             </li>
           ))
         }
-      </ul>
+      </FlipGrid>
     </div>
   </section>
 
@@ -265,13 +385,11 @@ const gallery = [
   <section id="kontak" class="cta-band">
     <div class="container cta-inner reveal">
       <span class="eyebrow on-dark">Kontak</span>
-      <h2>Butuh penawaran untuk proyek Anda?</h2>
+      <h2><StackingWords client:load>Need a quote for your project?</StackingWords></h2>
       <p>Hubungi tim BSM untuk konsultasi produk dan estimasi pengiriman ke lokasi proyek.</p>
       <div class="cta-actions">
-        <a class="btn btn-primary on-light" href={wa('Halo BSM, saya ingin konsultasi & minta penawaran material proyek.')}>
-          WhatsApp
-        </a>
-        <a class="btn btn-ghost on-dark" href="mailto:info@bsm.example.com">Email kami</a>
+        <a class="btn btn-primary on-light" href={wa('Halo BSM, saya ingin konsultasi & minta penawaran material proyek.')}>WhatsApp</a>
+        <a class="btn btn-ghost on-dark" href={`mailto:${EMAIL}`}>Email kami</a>
       </div>
     </div>
   </section>
@@ -306,13 +424,61 @@ const gallery = [
   }
 
   <script>
-    // Lazy-load scroll animations (GSAP) after the page has painted.
-    // Guarded: reduced-motion and no-JS users see fully visible content.
+    // --- Robust scroll reveals (the Jangkauan map and other sections) ---
+    // Content is visible by default (CSS). With JS, .reveal starts hidden and
+    // fades in via IntersectionObserver. A failsafe reveals anything still
+    // hidden shortly after load so content is NEVER trapped invisible if the
+    // observer is throttled (background tab, headless, blocked GSAP).
+    (() => {
+      const reveals = Array.from(document.querySelectorAll('.reveal, .stagger'));
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !reveals.length) { reveals.forEach((el) => el.classList.add('is-in')); }
+      else if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add('is-in'));
+      }
+      // Failsafe: if anything is still hidden after load settles, show it.
+      window.addEventListener('load', () => setTimeout(() => {
+        document.querySelectorAll('.reveal:not(.is-in), .stagger:not(.is-in)').forEach((el) => el.classList.add('is-in'));
+      }, 1200));
+    })();
+
+    // Lazy-load scroll-tied motion flourishes (GSAP) after paint. Guarded so a
+    // failed/blocked import can never affect content visibility (reveals above
+    // are handled independently of GSAP).
     window.addEventListener('load', () => {
       import('../scripts/scroll-anim')
         .then((m) => m.initScrollAnim())
         .catch(() => {});
     });
+
+    // Progressive enhancement for the Motion Core Globe: only show it (and hide
+    // the map fallback) once its WebGL canvas is actually drawing. If WebGL is
+    // blocked, throttled, or slow, the map stays — the section is never blank.
+    (() => {
+      const wrap = document.querySelector('.globe-wrap');
+      const fallback = document.querySelector('.globe-fallback');
+      if (!wrap || !fallback) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const start = Date.now();
+      const check = () => {
+        const c = wrap.querySelector('canvas');
+        if (c && c.width > 320 && c.height > 160) {
+          wrap.classList.add('is-active');
+          fallback.classList.add('is-hidden');
+          return;
+        }
+        if (Date.now() - start > 4000) return; // give up; keep the map
+        requestAnimationFrame(check);
+      };
+      check();
+    })();
   </script>
 
   <style>
@@ -332,7 +498,7 @@ const gallery = [
       font-size: 0.8rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--red-ink);
       display: block;
     }
     .eyebrow.on-dark { color: #fff; opacity: 0.85; }
@@ -379,6 +545,16 @@ const gallery = [
       background: radial-gradient(circle at 70% 30%, oklch(58% 0.11 195 / 0.32), transparent 60%);
       z-index: 0; pointer-events: none;
     }
+    /* contained atmospheric halo (Motion Core) behind the hero media — a subtle
+       steel/teal seal, not a full-bleed glow. Sits at low opacity so it reads as
+       brand texture, not decoration, and never competes with the photo. */
+    .hero-halo {
+      position: absolute; top: 8%; right: 4%; width: clamp(220px, 26vw, 340px); height: clamp(220px, 26vw, 340px);
+      z-index: 0; pointer-events: none; opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
+      mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
+      mix-blend-mode: screen;
+    }
     .hero-grid {
       position: relative; z-index: 1;
       display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 5vw, 72px); align-items: center;
@@ -390,8 +566,16 @@ const gallery = [
     .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
     .hero-stats { list-style: none; margin: 42px 0 0; padding: 26px 0 0; border-top: 1px solid var(--border); display: flex; gap: clamp(20px, 4vw, 44px); flex-wrap: wrap; }
     .hero-stats li { display: flex; flex-direction: column; gap: 2px; }
-    .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--red); font-variant-numeric: tabular-nums; }
+    .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--red-ink); font-variant-numeric: tabular-nums; }
     .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    /* tagline with looping Motion Core TextLoop */
+    .hero-tagline { display: block; font-family: var(--font-body); font-weight: 700; font-size: 0.92rem; letter-spacing: 0.02em; color: var(--ink-soft); margin-top: 10px; }
+    .hero-tagline-loop { color: var(--red); font-weight: 800; }
+    /* one-stop product dock (Motion Core MacosDock) */
+    .hero-dock { margin-top: 34px; }
+    .hero-dock :global(nav) { padding: 0; }
+    .hero-dock :global(ul) { gap: 4px; }
+    .hero-dock :global(img) { filter: none; }
 
     .hero-media {
       border-radius: var(--radius-lg); overflow: hidden; position: relative;
@@ -399,9 +583,15 @@ const gallery = [
       aspect-ratio: 3 / 2;
     }
     .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* Interactive-grid shader overlays the base photo; it only runs when motion is allowed. */
+    .hero-grid-shader { position: absolute; inset: 0; z-index: 1; }
+    .hero-grid-shader :global(canvas) { display: block; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-grid-shader { display: none; }
+    }
     .hero-stamp {
-      position: absolute; left: 18px; bottom: 18px;
-      background: var(--red); color: #fff; font-family: var(--font-body); font-weight: 800;
+      position: absolute; left: 18px; bottom: 18px; z-index: 2;
+      background: var(--red-deep); color: #fff; font-family: var(--font-body); font-weight: 800;
       font-size: 0.78rem; letter-spacing: 0.04em; padding: 9px 14px; border-radius: var(--radius-sm);
       box-shadow: 0 8px 20px -10px oklch(58% 0.11 195 / 0.7);
     }
@@ -419,7 +609,7 @@ const gallery = [
       display: flex; flex-wrap: wrap; align-items: center; gap: clamp(20px, 4vw, 52px);
     }
     .proof-lead { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.1rem, 2.2vw, 1.45rem); letter-spacing: -0.01em; margin: 0; flex: 1 1 240px; color: #fff; }
-    .proof-lead strong { color: var(--red); }
+    .proof-lead strong { color: var(--red-ink); }
     .proof-facts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 26px; }
     .proof-facts li { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 0.92rem; color: oklch(85% 0.01 95); }
     .fact-mark { width: 9px; height: 9px; border-radius: 2px; background: var(--red); flex: none; }
@@ -435,7 +625,7 @@ const gallery = [
       font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1;
       color: #fff; letter-spacing: -0.03em; text-shadow: 0 2px 16px oklch(0% 0 0 / 0.5);
     }
-    .product-kicker { font-family: var(--font-body); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--red); display: block; }
+    .product-kicker { font-family: var(--font-body); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--red-ink); display: block; }
     .product-copy h3 { font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -0.025em; margin: 12px 0 0; }
     .product-copy p { color: var(--muted); font-size: 1.05rem; margin: 14px 0 26px; max-width: 46ch; }
 
@@ -459,10 +649,10 @@ const gallery = [
       display: grid; place-items: center; box-shadow: 0 14px 30px -14px oklch(58% 0.11 195 / 0.6);
       position: relative;
     }
-    /* concentric brushed-steel ring around the hub */
-    .flow-core::before {
+    /* concentric brushed-steel ring around the hub — rotates in on scroll (.flow-ring) */
+    .flow-ring {
       content: ""; position: absolute; inset: -12px; border-radius: 50%;
-      padding: 2px;
+      padding: 2px; pointer-events: none;
       background: conic-gradient(from 210deg,
         oklch(82% 0.005 250), oklch(46% 0.008 250) 25%,
         oklch(88% 0.004 250) 50%, oklch(42% 0.008 250) 75%, oklch(82% 0.005 250));
@@ -472,23 +662,33 @@ const gallery = [
 
     .advantage-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(28px, 3.4vw, 52px); }
     .advantage { border-top: 2px solid var(--red); padding-top: 24px; }
-    .advantage-num { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: var(--red); letter-spacing: -0.02em; display: block; line-height: 1; }
+    .advantage-num { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: var(--red-ink); letter-spacing: -0.02em; display: block; line-height: 1; }
     .advantage h3 { font-size: 1.35rem; margin: 16px 0 10px; color: var(--ink); letter-spacing: -0.015em; }
     .advantage p { color: var(--muted); font-size: 1rem; margin: 0; max-width: 42ch; }
 
-    /* ---------- COVERAGE ---------- */
+    /* ---------- COVERAGE (Motion Core Globe) ----------
+       The map is the robust default visual (always renders). The WebGL Globe
+       is a progressive enhancement layered on top when it can actually draw;
+       a watchdog reverts to the map if the canvas never sizes (blocked/
+       throttled WebGL). Never leaves the section blank. */
     .coverage-grid { display: block; }
-    .map-wrap {
-      /* transparent, breaks out of the container and centers in the viewport */
-      background: transparent;
-      width: 96vw;
-      margin-left: 50%;
-      transform: translateX(-50%);
+    .globe-stage { position: relative; max-width: min(560px, 90vw); margin: 0 auto; }
+    .globe-fallback { display: block; width: 100%; height: auto; }
+    .globe-fallback .map-land {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 2.4px;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
     }
-    .map-wrap img { width: 100%; height: auto; display: block; }
+    .globe-fallback .map-dot { fill: var(--teal); stroke: #fff; stroke-width: 2px; vector-effect: non-scaling-stroke; }
+    .globe-fallback .map-ring { fill: none; stroke: var(--steel-line); stroke-width: 2px; opacity: 0.85; vector-effect: non-scaling-stroke; }
+    .globe-wrap { display: none; position: relative; width: 100%; aspect-ratio: 1 / 1; }
+    .globe-wrap.is-active { display: block; }
+    .globe-fallback.is-hidden { display: none; }
     .marquee { margin-top: clamp(40px, 5vw, 72px); overflow: hidden; border-block: 1px solid var(--border); padding-block: 14px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
-    .marquee-track { display: flex; gap: 0; width: max-content; animation: marquee 36s linear infinite; }
-    .marquee-item { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; color: var(--muted); padding-inline: 26px; position: relative; letter-spacing: 0.02em; }
+    .marquee :global(.marquee-part) { display: flex; align-items: center; }
+    .marquee-item { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; color: var(--muted); padding-inline: 26px; position: relative; letter-spacing: 0.02em; white-space: nowrap; }
     .marquee-item::after { content: ""; position: absolute; right: -3px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
 
     /* ---------- GALLERY ---------- */
@@ -497,16 +697,36 @@ const gallery = [
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 400ms var(--ease-out); }
     .gallery-item:hover img { transform: scale(1.04); }
 
+    /* ---------- REVEAL (robust, animation-agnostic) ----------
+       Content is visible by default. With JS enabled, .reveal starts hidden
+       and fades in when scrolled into view via an IntersectionObserver.
+       A hard failsafe (in the script) makes anything still hidden after
+       load visible, so content can never be trapped invisible if the
+       observer never fires (throttled tab / headless / blocked GSAP). */
+    .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); will-change: opacity, transform; }
+    .js .reveal.is-in { opacity: 1; transform: none; }
+    /* Staggered groups (advantages, posts): children start hidden only with JS,
+       and reveal via the same IntersectionObserver. Failsafe shows them too. */
+    .js .stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out); }
+    .js .stagger.is-in > * { opacity: 1; transform: none; }
+    .js .stagger.is-in > *:nth-child(2) { transition-delay: 0.06s; }
+    .js .stagger.is-in > *:nth-child(3) { transition-delay: 0.12s; }
+    .js .stagger.is-in > *:nth-child(4) { transition-delay: 0.18s; }
+    @media (prefers-reduced-motion: reduce) {
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .js .stagger > * { opacity: 1; transform: none; transition: none; }
+    }
+
     /* ---------- CTA BAND ---------- */
     .cta-band {
       background:
-        radial-gradient(60% 140% at 50% 120%, oklch(50% 0.10 195), transparent 60%),
-        linear-gradient(135deg, var(--red), oklch(50% 0.10 195));
+        radial-gradient(60% 140% at 50% 120%, oklch(44% 0.10 195), transparent 60%),
+        linear-gradient(135deg, var(--red-deep), oklch(44% 0.10 195));
       color: #fff; padding-block: clamp(64px, 9vw, 120px); position: relative;
     }
     .cta-inner { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; }
     .cta-band h2 { font-size: clamp(2rem, 4.6vw, 3.2rem); letter-spacing: -0.03em; max-width: 20ch; color: #fff; }
-    .cta-band p { color: oklch(92% 0.01 27); margin: 16px 0 30px; font-size: 1.1rem; }
+    .cta-band p { color: oklch(98% 0.01 27); margin: 16px 0 30px; font-size: 1.1rem; }
     .cta-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
     .btn.on-light { background: #fff; color: var(--red-deep); border-color: #fff; box-shadow: none; }
     .btn.on-light:hover { background: oklch(96% 0.02 27); }
@@ -522,7 +742,10 @@ const gallery = [
 
     /* ---------- keyframes ---------- */
     @keyframes marquee { to { transform: translateX(-33.333%); } }
-    @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { animation: none; }
+      .hero-dock :global(ul) { pointer-events: none; }
+    }
 
     /* ---------- responsive ---------- */
     @media (max-width: 900px) {

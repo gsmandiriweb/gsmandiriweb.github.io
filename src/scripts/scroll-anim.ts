@@ -1,10 +1,11 @@
-// Scroll-driven motion for the BSM homepage, powered by GSAP + ScrollTrigger.
-// Safety model (unchanged from prior build):
-//  - .reveal elements are VISIBLE by default (CSS fallback). GSAP sets the
-//    hidden start state itself only after it has successfully loaded, so a
-//    failed/blocked import can never leave content invisible.
-//  - prefers-reduced-motion: we bail out entirely and leave content as-is.
-//  - Reveals fire once (toggleActions none) — no re-animation on scroll-up.
+// Scroll-driven decorative motion for the BSM homepage, powered by GSAP +
+// ScrollTrigger. CONTENT VISIBILITY IS OWNED ELSEWHERE: section reveals
+// (.reveal / .stagger / .gallery-reveal / .flow-core) are handled by an
+// IntersectionObserver + CSS in the page, which can never trap content
+// invisible. This script only adds flourishes that do NOT hide anything:
+// the one-stop hub ring rotation and a subtle hero parallax. If GSAP fails to
+// load, the page is fully visible and just a touch less animated.
+// prefers-reduced-motion: we bail out entirely and leave content as-is.
 export async function initScrollAnim(): Promise<void> {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;
@@ -13,54 +14,26 @@ export async function initScrollAnim(): Promise<void> {
   const { ScrollTrigger } = await import('gsap/ScrollTrigger');
   gsap.registerPlugin(ScrollTrigger);
 
-  const reveals = gsap.utils.toArray<HTMLElement>('.reveal');
-  if (reveals.length) {
-    gsap.set(reveals, { autoAlpha: 0, y: 28 });
-    reveals.forEach((el) => {
-      gsap.to(el, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-      });
-    });
-  }
-
-  // Staggered children for grouped plates (advantages, coverage nodes, posts).
-  gsap.utils.toArray<HTMLElement>('.stagger').forEach((group) => {
-    const kids = gsap.utils.toArray<HTMLElement>(group.children);
-    gsap.set(kids, { autoAlpha: 0, y: 20 });
-    gsap.to(kids, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 0.6,
-      ease: 'power2.out',
-      stagger: 0.08,
-      scrollTrigger: { trigger: group, start: 'top 84%', once: true },
-    });
-  });
-
-  // Gauge needle: sweeps as the proof / stat strip passes through view.
-  const needle = document.querySelector<SVGGElement>('.gauge-needle');
-  if (needle) {
+  // --- One-stop hub: the brushed-steel ring around .flow-core turns as the
+  //     flow passes through view, embodying "satu sumber suplai". Pure rotation
+  //     — never hides the core (visibility is owned by the IO/CSS reveal). ---
+  gsap.utils.toArray<HTMLElement>('.flow-core').forEach((core) => {
+    const ring = core.querySelector<HTMLElement>('.flow-ring');
+    if (!ring) return;
     gsap.fromTo(
-      needle,
-      { rotation: -30, svgOrigin: '70 70' },
+      ring,
+      { rotation: -120 },
       {
-        rotation: 70,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.hero-stats',
-          start: 'top 82%',
-          end: 'bottom 35%',
-          scrub: 0.6,
-        },
+        rotation: 0,
+        ease: 'power2.out',
+        duration: 1.4,
+        scrollTrigger: { trigger: core, start: 'top 82%', once: true },
       }
     );
-  }
+  });
 
-  // Subtle hero parallax — media drifts slower than the page scrolls.
+  // --- Subtle hero parallax — media drifts slower than the page scrolls.
+  //     (The hero itself is revealed by the IO, not by GSAP.) ---
   const heroMedia = document.querySelector<HTMLElement>('.hero-media');
   if (heroMedia) {
     gsap.to(heroMedia, {
@@ -69,21 +42,4 @@ export async function initScrollAnim(): Promise<void> {
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });
   }
-
-  // Section gear dividers ease in with a slight turn.
-  gsap.utils.toArray<HTMLElement>('.gear-divider').forEach((el) => {
-    gsap.fromTo(
-      el.querySelector('.steel-gear'),
-      { rotation: -25, autoAlpha: 0 },
-      {
-        rotation: 0,
-        autoAlpha: 1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-      }
-    );
-  });
-
-  ScrollTrigger.refresh();
 }

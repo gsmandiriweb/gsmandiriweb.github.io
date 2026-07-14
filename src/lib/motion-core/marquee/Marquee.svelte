@@ -1,0 +1,157 @@
+<script lang="ts">
+	import { onMount } from "svelte";
+	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	import { registerPluginOnce } from "../helpers/gsap";
+	import type { Snippet } from "svelte";
+	import { cn } from "../utils/cn";
+
+	interface Props {
+		/**
+		 * Additional CSS classes for the container.
+		 */
+		class?: string;
+		/**
+		 * Gap between marquee items in pixels.
+		 * @default 32
+		 */
+		gap?: number;
+		/**
+		 * Content to be scrolled in the marquee.
+		 */
+		children?: Snippet;
+		/**
+		 * Number of times to repeat the content to ensure seamless scrolling.
+		 * @default 3
+		 */
+		repeat?: number;
+		/**
+		 * Duration of one full loop in seconds.
+		 * @default 5
+		 */
+		duration?: number;
+		/**
+		 * Factor to increase speed based on scroll velocity.
+		 * @default 0.5
+		 */
+		velocity?: number;
+		/**
+		 * Whether to scroll in the opposite direction.
+		 * @default false
+		 */
+		reversed?: boolean;
+		/**
+		 * The element to watch for scroll events to adjust velocity.
+		 */
+		scrollElement?: string | HTMLElement | null;
+	}
+
+	let {
+		class: className = "",
+		gap = 32,
+		children,
+		repeat = 3,
+		duration = 5,
+		velocity = 0.5,
+		reversed = false,
+		scrollElement,
+	}: Props = $props();
+
+	let container = $state<HTMLElement>();
+
+	const attachContainer = (node: HTMLElement) => {
+		container = node;
+		return () => {
+			if (container === node) {
+				container = undefined;
+			}
+		};
+	};
+
+	onMount(() => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		registerPluginOnce(ScrollTrigger);
+
+		const parts = container?.querySelectorAll(".marquee-part");
+		if (!parts?.length) return;
+		const resolvedScroller =
+			typeof scrollElement === "string"
+				? document.querySelector<HTMLElement>(scrollElement)
+				: scrollElement instanceof HTMLElement
+					? scrollElement
+					: null;
+		const scroller =
+			resolvedScroller instanceof HTMLElement ? resolvedScroller : window;
+
+		let direction = reversed ? -1 : 1;
+
+		let timeline: gsap.core.Timeline | null = null;
+		let trigger: ScrollTrigger | null = null;
+		const ctx = gsap.context(() => {
+			timeline = gsap.timeline({
+				repeat: -1,
+				onReverseComplete() {
+					this.totalTime(this.rawTime() + this.duration() * 10);
+				},
+			});
+
+			timeline.to(parts, {
+				xPercent: -100,
+				ease: "none",
+				duration,
+			});
+
+			if (reversed) {
+				timeline.progress(1);
+				timeline.timeScale(-1);
+			}
+
+			trigger = ScrollTrigger.create({
+				scroller,
+				onUpdate(self) {
+					if (!timeline) return;
+					const currentScrollDir = self.direction;
+					const targetDir = reversed ? -currentScrollDir : currentScrollDir;
+
+					if (direction !== targetDir) {
+						direction = targetDir;
+						gsap.to(timeline, { timeScale: direction, overwrite: true });
+					}
+
+					const scrollVel = self.getVelocity();
+					if (Math.abs(scrollVel) > 0) {
+						const timeScale =
+							direction * (1 + Math.abs(scrollVel * velocity) / 1000);
+						gsap.to(timeline, { timeScale, overwrite: true, duration: 0.1 });
+						gsap.to(timeline, {
+							timeScale: direction,
+							duration: 0.5,
+							delay: 0.1,
+							overwrite: "auto",
+						});
+					}
+				},
+			});
+		}, container);
+
+		return () => {
+			ctx.revert();
+			timeline = null;
+			trigger = null;
+		};
+	});
+</script>
+
+<div {@attach attachContainer} class={cn("flex h-full w-full", className)}>
+	{#each Array(repeat) as _, i (i)}
+		<div
+			class="marquee-part flex shrink-0"
+			style:gap="{gap}px"
+			style:padding-left="{gap / 2}px"
+			style:padding-right="{gap / 2}px"
+			aria-hidden={i > 0}
+		>
+			{@render children?.()}
+		</div>
+	{/each}
+</div>

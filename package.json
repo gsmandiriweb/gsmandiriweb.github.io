@@ -12,15 +12,23 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/svelte": "^9.0.1",
+    "@mediapipe/tasks-vision": "^0.10.35",
     "@types/three": "^0.185.1",
     "astro": "^7.0.7",
+    "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
     "gsap": "^3.15.0",
     "svelte": "^5.56.4",
+    "tailwind-merge": "^3.6.0",
     "three": "^0.185.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@motion-core/cli": "^0.6.1",
+    "@tailwindcss/vite": "^4.3.2",
+    "@types/gsap": "^3.0.0",
+    "ogl": "^1.0.11",
+    "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3"
   }
 }
