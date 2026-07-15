@@ -1,27 +1,22 @@
-/* Motion Core / Tailwind v4 entry.
-   Intentionally preflight-free: the brand's hand-tuned OKLCH system in
-   Base.astro owns the reset, so we only pull in Tailwind's design tokens
-   and utility layer for the vendored Motion Core components.
-   @source points Tailwind at the vendored components so their utility
-   classes (h-full, inset-0, etc.) get generated.
+/* Tailwind v4 entry for Motion Core components.
+   Preflight-free: the brand's hand-tuned reset lives in Base.astro.
+   We only pull in Tailwind's design tokens and utility layer.
 
-   The vendored components reference semantic theme tokens (bg-background,
-   text-foreground, border-border, bg-accent, bg-fixed-light, ...). We
-   define them here, mapped onto the brand's teal / graphite OKLCH ramp,
-   so the components render correctly without touching their source. */
+   Theme tokens are mapped onto the BSM Red / graphite system from DESIGN.md
+   so Motion Core components render correctly without touching their source. */
 @import "tailwindcss/theme.css";
 @import "tailwindcss/utilities.css";
 @source "../lib/motion-core";
 
 @theme {
-  --color-background: oklch(99% 0.002 95);
-  --color-background-muted: oklch(97% 0.003 95);
-  --color-background-inset: oklch(16% 0.01 95);
-  --color-foreground: oklch(22% 0.01 95);
-  --color-foreground-muted: oklch(48% 0.01 95);
-  --color-border: oklch(86% 0.006 95);
-  --color-accent: oklch(58% 0.11 195);
-  --color-accent-deep: oklch(50% 0.10 195);
-  --color-fixed-light: oklch(99% 0.002 95);
-  --color-fixed-dark: oklch(16% 0.01 95);
+  --color-background: #ffffff;
+  --color-background-muted: #f6f7f9;
+  --color-background-inset: #15171c;
+  --color-foreground: #15171c;
+  --color-foreground-muted: #5b6470;
+  --color-border: #d4d8de;
+  --color-accent: #e22b1e;
+  --color-accent-deep: #b91c12;
+  --color-fixed-light: #ffffff;
+  --color-fixed-dark: #15171c;
 }

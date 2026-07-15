@@ -1,5 +1,4 @@
 ---
-import Magnetic from '../lib/motion-core/magnetic/Magnetic.svelte';
 import '../app.css';
 import { WHATSAPP_NUMBER, EMAIL } from '../config/contact';
 interface Props {
@@ -50,7 +49,7 @@ const jsonLd =
 <html lang="id">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -68,7 +67,7 @@ const jsonLd =
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Sora:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
@@ -89,16 +88,14 @@ const jsonLd =
         <span class="brand-text">CV Bangun Sarana Makmur</span>
       </a>
       <nav id="primary-nav" class="primary-nav" aria-label="Navigasi utama">
-        <a href="/#produk">Produk</a>
-        <a href="/#satu-atap">Satu Atap</a>
-        <a href="/#jangkauan">Jangkauan</a>
-        <a href="/#kontak">Kontak</a>
+        <a href="/">Beranda</a>
+        <a href="/produk/pagar-brc">Produk</a>
+        <a href="/tentang">Tentang</a>
         <a href="/blog">Blog</a>
+        <a href="/#kontak">Kontak</a>
       </nav>
       <div class="header-actions">
-        <Magnetic duration={0.5} ease="power3.out" client:load>
-          <a class="btn btn-primary nav-cta" href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp</a>
-        </Magnetic>
+        <a class="btn btn-primary nav-cta" href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp</a>
         <button
           class="nav-toggle"
           aria-expanded="false"
@@ -109,7 +106,7 @@ const jsonLd =
         </button>
       </div>
     </header>
-    <main id="main" class="building">
+    <main id="main">
       <slot />
     </main>
     <footer class="site-footer">
@@ -153,7 +150,33 @@ const jsonLd =
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      // Read-position indicator: thin brand bar under the sticky header.
+      // Active section highlighting
+      const navLinks = Array.from(nav?.querySelectorAll('a[href^="/"]') || []);
+      const sections = navLinks
+        .map((a) => {
+          const hash = a.getAttribute('href')?.split('#')[1];
+          return hash ? document.getElementById(hash) : null;
+        })
+        .filter(Boolean);
+
+      if (sections.length) {
+        const updateActive = () => {
+          const scrollY = window.scrollY + 120;
+          let current = '';
+          sections.forEach((section) => {
+            if (section && section.offsetTop <= scrollY) {
+              current = section.id;
+            }
+          });
+          navLinks.forEach((a) => {
+            const hash = a.getAttribute('href')?.split('#')[1];
+            a.classList.toggle('is-active', hash === current);
+          });
+        };
+        updateActive();
+        window.addEventListener('scroll', updateActive, { passive: true });
+      }
+
       const bar = document.querySelector<HTMLElement>('.scroll-progress');
       if (bar) {
         const setProgress = () => {
@@ -161,6 +184,7 @@ const jsonLd =
           const max = h.scrollHeight - h.clientHeight;
           const p = max > 0 ? h.scrollTop / max : 0;
           bar.style.transform = `scaleX(${p})`;
+          bar.classList.toggle('complete', p > 0.98);
         };
         setProgress();
         window.addEventListener('scroll', setProgress, { passive: true });
@@ -168,36 +192,29 @@ const jsonLd =
       }
     </script>
     <style is:global>
+      @import '../styles/home.css';
+      @import '../styles/cinematic.css';
       :root {
-        /* ---- Sleek teal / graphite system (OKLCH) ---- */
-        --bg: oklch(99% 0.002 95);
-        --surface: oklch(97% 0.003 95);
-        --surface-2: oklch(95% 0.004 95);
-        --ink: oklch(22% 0.01 95);
-        --ink-soft: oklch(30% 0.01 95);
-        --muted: oklch(48% 0.01 95);
-        --muted-2: oklch(50% 0.008 95);
+        /* ---- BSM design system (DESIGN.md) ---- */
+        --bg: #ffffff;
+        --surface: #f6f7f9;
+        --surface-2: #eef0f3;
+        --ink: #15171c;
+        --ink-soft: #2b2f38;
+        --muted: #5b6470;
 
-        --red: oklch(58% 0.11 195);
-        --red-deep: oklch(50% 0.10 195);
-        /* red used for TEXT on light backgrounds — tuned to ≥4.5:1 on white */
-        --red-ink: oklch(55% 0.14 195);
-        --red-tint: oklch(95% 0.03 195);
-        /* Semantic alias so teal stays the brand's voice and is easy to recolor. */
-        --teal: oklch(58% 0.11 195);
+        --red: #e22b1e;
+        --red-deep: #b91c12;
+        --red-ink: #c41f14;
+        --red-tint: oklch(96.5% 2.2% 25);
 
-        /* concrete slab tones (match section backgrounds so seams read as the slab breaking) */
-        --concrete: oklch(99% 0.002 95);
-        --concrete-2: oklch(97% 0.003 95);
-        --steel-line: oklch(58% 0.008 250);
-
-        --border: oklch(92% 0.004 95);
-        --border-strong: oklch(86% 0.006 95);
+        --border: #e6e8ec;
+        --border-strong: #d4d8de;
         --hairline: oklch(90% 0 0 / 0.8);
 
         --radius-sm: 4px;
-        --radius-md: 8px;
-        --radius-lg: 14px;
+        --radius-md: 6px;
+        --radius-lg: 10px;
         --radius-pill: 999px;
 
         --space-sm: 8px;
@@ -205,18 +222,16 @@ const jsonLd =
         --space-lg: 24px;
         --space-xl: 40px;
         --space-2xl: 64px;
-        --space-3xl: 104px;
+        --space-3xl: 96px;
 
-        --shadow-card: 0 1px 2px oklch(22% 0.01 95 / 0.06), 0 12px 30px -16px oklch(22% 0.01 95 / 0.18);
-        --shadow-soft: 0 16px 40px -20px oklch(22% 0.01 95 / 0.22);
-        --shadow-deep: 0 30px 70px -30px oklch(22% 0.01 95 / 0.3);
+        --shadow-soft: 0 16px 40px -20px oklch(22% 0.01 25 / 0.18);
+        --shadow-card: 0 1px 2px oklch(22% 0.01 25 / 0.05), 0 8px 24px -12px oklch(22% 0.01 25 / 0.12);
 
         --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         --ease-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
 
         --font-display: "Sora", system-ui, sans-serif;
         --font-body: "Geist", system-ui, -apple-system, sans-serif;
-        --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
         --maxw: 1180px;
       }
@@ -233,43 +248,11 @@ const jsonLd =
         font-family: var(--font-body);
         color: var(--ink);
         background: var(--bg);
-        line-height: 1.62;
+        line-height: 1.6;
         font-size: 1.0625rem;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
       }
-
-      /* ---------- Steel-frame background ----------
-         The whole page sits inside the building's steel skeleton: sparse vertical
-         uprights with occasional horizontal ties, fixed behind all content. Subtle,
-         structural — a literal frame for a steel/construction brand, not decoration. */
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background-image:
-          /* horizontal ties (sparse) */
-          linear-gradient(180deg, var(--steel-line) 1px, transparent 1px),
-          /* vertical uprights */
-          linear-gradient(90deg, var(--steel-line) 1.5px, transparent 1.5px);
-        background-size:
-          100% 340px,
-          72px 100%;
-        background-position: 0 0, 0 0;
-        opacity: 0.13;
-        -webkit-mask-image:
-          linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent),
-          linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
-        -webkit-mask-composite: source-in;
-        mask-image:
-          linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent),
-          linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
-        mask-composite: intersect;
-      }
-      /* content sits above the frame */
-      .site-header, #main, .site-footer { position: relative; z-index: 1; }
 
       h1, h2, h3, h4 {
         font-family: var(--font-display);
@@ -277,19 +260,12 @@ const jsonLd =
         margin: 0;
         text-wrap: balance;
         font-weight: 600;
-        letter-spacing: -0.02em;
       }
 
-      p { text-wrap: pretty; }
+      p { text-wrap: pretty; margin: 0; }
       a { color: var(--red-deep); }
 
-      ::selection { background: var(--red-tint); color: var(--red-deep); }
-
-      /* ---------- Building metaphor: concrete slabs over a steel skeleton ----------
-         Sections are concrete slabs. At each seam their edges crumble to reveal the
-         steel pipes running through the cavity between them. Concrete = section bg. */
-      .building { position: relative; }
-
+      ::selection { background: var(--red-tint); color: var(--red-ink); }
 
       .skip-link {
         position: absolute;
@@ -304,16 +280,46 @@ const jsonLd =
       }
       .skip-link:focus { left: 0; }
 
-      /* ---------- Buttons ---------- */
+      /* ---- Typography scale (DESIGN.md) ---- */
+      .display {
+        font-family: var(--font-display);
+        font-size: clamp(2.4rem, 5.4vw, 4.25rem);
+        font-weight: 600;
+        line-height: 1.02;
+        letter-spacing: -0.035em;
+      }
+      .headline {
+        font-family: var(--font-display);
+        font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+        font-weight: 600;
+        line-height: 1.08;
+        letter-spacing: -0.025em;
+      }
+      .title {
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 2.6vw, 2rem);
+        font-weight: 600;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+      .label {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        font-weight: 600;
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+      }
+
+      /* ---- Buttons ---- */
       .btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 9px;
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         font-size: 0.95rem;
-        letter-spacing: 0.01em;
+        letter-spacing: -0.01em;
         padding: 13px 26px;
         border-radius: var(--radius-md);
         text-decoration: none;
@@ -324,15 +330,29 @@ const jsonLd =
           border-color 220ms var(--ease-out), transform 220ms var(--ease-out),
           box-shadow 220ms var(--ease-out);
       }
-      .btn-primary {
-        background: var(--red-deep);
-        color: #fff;
-        border-color: oklch(44% 0.10 195);
-        box-shadow: 0 10px 24px -12px oklch(50% 0.10 195 / 0.6);
+      .btn:active {
+        transform: translateY(1px) scale(0.97);
+        transition-duration: 80ms;
       }
-      .btn-primary:hover { transform: translateY(-1px); background: oklch(44% 0.10 195); }
+      .btn-primary:active {
+        transform: translateY(1px) scale(0.97);
+        box-shadow: 0 4px 10px -8px oklch(45% 0.12 25 / 0.7);
+      }
+      .btn-primary {
+        background: var(--red);
+        color: #fff;
+        border-color: var(--red-deep);
+        box-shadow: 0 10px 24px -12px oklch(40% 0.12 25 / 0.45),
+                    inset 0 1px 0 oklch(100% 0 0 / 0.15);
+      }
+      .btn-primary:hover {
+        background: var(--red-deep);
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px -10px oklch(40% 0.12 25 / 0.55),
+                    inset 0 1px 0 oklch(100% 0 0 / 0.2);
+      }
       .btn-primary:focus-visible {
-        outline: 2px solid var(--red-deep);
+        outline: 2px solid var(--red);
         outline-offset: 3px;
       }
       .btn-ghost {
@@ -343,8 +363,9 @@ const jsonLd =
       }
       .btn-ghost:hover {
         border-color: var(--red);
-        color: var(--red-deep);
+        color: var(--red-ink);
         background: var(--red-tint);
+        transform: translateY(-1px);
       }
       .btn-ghost.on-dark {
         color: #fff;
@@ -356,11 +377,14 @@ const jsonLd =
         border-color: #fff;
         color: #fff;
       }
-      /* tactile press feedback */
-      .btn:active { transform: translateY(1px) scale(0.975); }
-      .btn-primary:active { transform: translateY(1px) scale(0.975); box-shadow: 0 4px 10px -8px oklch(58% 0.11 195 / 0.7); }
+      .btn.on-light {
+        background: #fff;
+        color: var(--red-deep);
+        border-color: #fff;
+      }
+      .btn.on-light:hover { background: oklch(96% 0.02 25); }
 
-      /* ---------- Header ---------- */
+      /* ---- Header ---- */
       .site-header {
         position: sticky;
         top: 0;
@@ -369,74 +393,105 @@ const jsonLd =
         grid-template-columns: auto 1fr auto;
         align-items: center;
         gap: var(--space-lg);
-        background: oklch(99% 0.002 95 / 0.82);
-        backdrop-filter: saturate(150%) blur(14px);
-        -webkit-backdrop-filter: saturate(150%) blur(14px);
+        background: oklch(100% 0 0 / 0.88);
+        backdrop-filter: saturate(180%) blur(16px);
+        -webkit-backdrop-filter: saturate(180%) blur(16px);
         border-bottom: 1px solid transparent;
-        padding: 11px clamp(1rem, 4vw, 2rem);
+        padding: 10px clamp(1rem, 4vw, 2rem);
+        padding-top: max(10px, env(safe-area-inset-top));
         transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out),
           background 220ms var(--ease-out);
       }
       .site-header.scrolled {
         border-bottom-color: var(--border);
-        box-shadow: 0 14px 30px -22px oklch(22% 0.01 95 / 0.5);
+        box-shadow: 0 14px 30px -22px oklch(22% 0.01 25 / 0.35);
       }
-      /* read-position indicator: sits flush at the very bottom edge of the header */
       .scroll-progress {
         position: absolute;
-        left: 0; bottom: -1px;
-        width: 100%; height: 2px;
+        left: 0;
+        bottom: -1px;
+        width: 100%;
+        height: 2px;
         transform: scaleX(0);
         transform-origin: 0 50%;
         background: linear-gradient(90deg, var(--red-deep), var(--red));
-        box-shadow: 0 0 8px oklch(58% 0.11 195 / 0.5);
-        will-change: transform;
+        box-shadow: 0 0 8px oklch(50% 0.12 25 / 0.35);
+        transition: box-shadow 300ms var(--ease-out);
       }
-      @media (prefers-reduced-motion: reduce) {
-        .scroll-progress { transition: none; }
+      .scroll-progress.complete {
+        box-shadow: 0 0 12px oklch(50% 0.12 25 / 0.5), 0 0 24px oklch(50% 0.12 25 / 0.2);
+        background: linear-gradient(90deg, var(--red), var(--red-deep));
       }
 
       .brand {
         display: inline-flex;
         align-items: center;
-        gap: 11px;
+        gap: 10px;
         font-family: var(--font-display);
         font-weight: 700;
-        font-size: 1.02rem;
+        font-size: 1rem;
         letter-spacing: -0.01em;
         color: var(--ink);
         text-decoration: none;
         white-space: nowrap;
+        transition: transform 200ms var(--ease-out);
+      }
+      .brand:hover {
+        transform: translateY(-1px);
+      }
+      .brand:focus-visible {
+        outline: 2px solid var(--red);
+        outline-offset: 4px;
+        border-radius: var(--radius-sm);
       }
       .brand-mark {
         display: grid;
         place-items: center;
-        width: 34px; height: 34px;
-        border-radius: 8px;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-md);
         color: #fff;
         background: var(--red);
         border: 1px solid var(--red-deep);
         box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.2);
+        transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+        animation: brand-pulse 2s var(--ease-out) 0.5s;
+      }
+      @keyframes brand-pulse {
+        0% { transform: scale(1); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.2); }
+        50% { transform: scale(1.08); box-shadow: 0 0 16px oklch(50% 0.12 25 / 0.3), inset 0 1px 0 oklch(100% 0 0 / 0.2); }
+        100% { transform: scale(1); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.2); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .brand-mark { animation: none; }
+      }
+      .brand:hover .brand-mark {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px -4px oklch(40% 0.12 25 / 0.4), inset 0 1px 0 oklch(100% 0 0 / 0.2);
       }
       .primary-nav {
         display: flex;
         justify-content: flex-end;
-        gap: clamp(18px, 2.4vw, 34px);
+        gap: clamp(20px, 2.8vw, 36px);
       }
       .primary-nav a {
         color: var(--muted);
         text-decoration: none;
         font-weight: 600;
-        font-size: 0.95rem;
+        font-size: 0.9375rem;
         padding: 6px 0;
         position: relative;
+        transition: color 200ms var(--ease-out);
       }
       .primary-nav a::after {
         content: "";
         position: absolute;
-        left: 0; right: 0; bottom: -2px;
+        left: 0;
+        right: 0;
+        bottom: -2px;
         height: 2px;
         background: var(--red);
+        border-radius: 1px;
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 240ms var(--ease-out);
@@ -445,49 +500,101 @@ const jsonLd =
       .primary-nav a.is-active { color: var(--ink); }
       .primary-nav a:hover::after,
       .primary-nav a.is-active::after { transform: scaleX(1); }
-      .header-actions { display: flex; align-items: center; gap: 12px; }
-      .nav-cta { white-space: nowrap; }
+      .primary-nav a:focus-visible {
+        outline: 2px solid var(--red);
+        outline-offset: 6px;
+        border-radius: var(--radius-sm);
+      }
+
+      .header-actions { display: flex; align-items: center; gap: 10px; }
+      .nav-cta { white-space: nowrap; font-size: 0.875rem; padding: 10px 20px; }
       .nav-toggle {
         display: none;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
         gap: 5px;
-        width: 44px;
-        height: 44px;
-        background: var(--surface);
+        width: 40px;
+        height: 40px;
+        background: transparent;
         border: 1px solid var(--border);
         border-radius: var(--radius-md);
         cursor: pointer;
+        transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out);
+      }
+      .nav-toggle:hover {
+        background: var(--surface);
+        border-color: var(--border-strong);
+      }
+      .nav-toggle:focus-visible {
+        outline: 2px solid var(--red);
+        outline-offset: 2px;
       }
       .nav-toggle span {
         display: block;
-        width: 20px; height: 2px;
+        width: 18px;
+        height: 2px;
         background: var(--ink);
         border-radius: 2px;
         transition: transform 200ms var(--ease-out), opacity 200ms var(--ease-out);
       }
 
       @media (max-width: 860px) {
-        .site-header { grid-template-columns: 1fr auto; }
+        .site-header { grid-template-columns: 1fr auto; overflow: visible; }
+        .brand { font-size: 0.875rem; gap: 8px; }
+        .brand-text { display: none; }
         .nav-toggle { display: flex; }
         .primary-nav {
           position: absolute;
           top: 100%;
-          left: 0; right: 0;
+          left: 0;
+          right: 0;
           flex-direction: column;
           align-items: stretch;
           gap: 0;
-          background: oklch(11% 0.006 95 / 0.97);
-          border-bottom: 1px solid var(--hairline);
-          box-shadow: var(--shadow-deep);
+          background: oklch(100% 0 0 / 0.98);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid var(--border);
+          box-shadow: var(--shadow-soft);
           padding: 8px 0;
-          display: none;
+          opacity: 0;
+          transform: translateY(-8px);
+          pointer-events: none;
+          transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+          z-index: 100;
         }
-        .site-header.nav-open .primary-nav { display: flex; }
+        .site-header.nav-open .primary-nav {
+          display: flex;
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
         .primary-nav a {
           padding: 14px clamp(1rem, 4vw, 2rem);
-          border-top: 1px solid var(--hairline);
-          color: var(--muted);
+          border-top: 1px solid var(--border);
+          color: var(--ink-soft);
+          font-size: 1rem;
+          opacity: 0;
+          transform: translateX(-12px);
+          transition: color 160ms var(--ease-out), background 160ms var(--ease-out), opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+        }
+        .site-header.nav-open .primary-nav a {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .site-header.nav-open .primary-nav a:nth-child(1) { transition-delay: 40ms; }
+        .site-header.nav-open .primary-nav a:nth-child(2) { transition-delay: 80ms; }
+        .site-header.nav-open .primary-nav a:nth-child(3) { transition-delay: 120ms; }
+        .site-header.nav-open .primary-nav a:nth-child(4) { transition-delay: 160ms; }
+        .site-header.nav-open .primary-nav a:nth-child(5) { transition-delay: 200ms; }
+        .primary-nav a:hover {
+          color: var(--ink);
+          background: var(--surface);
+        }
+        .primary-nav a:hover {
+          color: #fff;
+          background: oklch(100% 0 0 / 0.06);
         }
         .primary-nav a::after { display: none; }
         .site-header.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -495,16 +602,16 @@ const jsonLd =
         .site-header.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
       }
 
-      /* ---------- Footer ---------- */
-      /* Deepened toward red-deep so white/near-white text holds ≥4.5:1
-         (was a red→red-deep gradient that dropped to ~2:1 on the right). */
+      /* ---- Footer ---- */
       .site-footer {
         background:
-          radial-gradient(80% 140% at 50% -10%, oklch(56% 0.11 195 / 0.5), transparent 60%),
-          linear-gradient(180deg, var(--red-deep), oklch(44% 0.10 195));
+          radial-gradient(80% 140% at 50% -10%, oklch(55% 0.13 25 / 0.5), transparent 60%),
+          linear-gradient(180deg, var(--red-deep), oklch(40% 0.11 25));
         color: #fff;
         padding: var(--space-3xl) clamp(1rem, 4vw, 2rem) var(--space-xl);
-        margin-top: var(--space-3xl);
+        padding-bottom: max(var(--space-xl), env(safe-area-inset-bottom));
+        padding-left: max(clamp(1rem, 4vw, 2rem), env(safe-area-inset-left));
+        padding-right: max(clamp(1rem, 4vw, 2rem), env(safe-area-inset-right));
         position: relative;
       }
       .footer-inner {
@@ -520,23 +627,23 @@ const jsonLd =
         font-weight: 700;
         color: #fff;
         margin: 0 0 10px;
-        font-size: 1.1rem;
+        font-size: 1.0625rem;
         letter-spacing: -0.01em;
       }
-      .footer-tag { margin: 0; font-size: 0.95rem; max-width: 38ch; line-height: 1.55; color: oklch(97% 0.01 95); }
+      .footer-tag { margin: 0; font-size: 0.95rem; max-width: 38ch; line-height: 1.55; color: oklch(96% 0.01 25); }
       .footer-nav { display: flex; flex-direction: column; gap: 11px; }
-      .footer-nav a { color: oklch(96% 0.01 95); text-decoration: none; font-size: 0.95rem; transition: color 160ms var(--ease-out); }
+      .footer-nav a { color: oklch(96% 0.01 25); text-decoration: none; font-size: 0.95rem; transition: color 160ms var(--ease-out); }
       .footer-nav a:hover { color: #fff; }
       .footer-contact { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-      .footer-mail { color: oklch(96% 0.01 95); text-decoration: none; font-size: 0.95rem; }
+      .footer-mail { color: oklch(96% 0.01 25); text-decoration: none; font-size: 0.95rem; }
       .footer-mail:hover { color: #fff; }
       .footer-legal {
         max-width: var(--maxw);
         margin: var(--space-xl) auto 0;
         padding-top: var(--space-lg);
         border-top: 1px solid oklch(100% 0 0 / 0.14);
-        font-size: 0.875rem;
-        color: oklch(92% 0.01 95);
+        font-size: 0.95rem;
+        color: oklch(92% 0.01 25);
         text-align: center;
       }
       @media (max-width: 760px) {

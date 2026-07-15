@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import { waLink as wa, EMAIL } from '../config/contact';
+
+const values = [
+  {
+    title: 'Kualitas tanpa kompromi',
+    body: 'Setiap produk melewati seleksi ketat dan memenuhi standar SNI. Kami hanya menjual material yang kami pakai sendiri.',
+  },
+  {
+    title: 'Satu sumber, banyak kebutuhan',
+    body: 'BSM menggabungkan produk dari beberapa pabrik sejenis sehingga Anda tak perlu menghubungi penyuplai satu per satu.',
+  },
+  {
+    title: 'Harga langsung dari pabrik',
+    body: 'Karena kami menampung dari beberapa pabrik, Anda mendapat harga pabrik — bukan harga eceran.',
+  },
+  {
+    title: 'Pengiriman ke seluruh Indonesia',
+    body: 'Dari Sabang sampai Merauke. Logistik tersebar memastikan material sampai tepat waktu ke lokasi proyek Anda.',
+  },
+];
+
+const timeline = [
+  { year: '2012', title: 'Berdiri', body: 'CV Bangun Sarana Makmur didirikan di Surabaya sebagai distributor material konstruksi.' },
+  { year: '2015', title: 'Ekspansi produk', body: 'Menambah lini produk guard rail dan kawat duri untuk melengkapi pagar BRC.' },
+  { year: '2018', title: 'Pemasok pemerintah', body: 'Mulai dipercaya sebagai penyuplai material untuk proyek-proyek pemerintah.' },
+  { year: '2020', title: 'Jangkauan nasional', body: 'Ekspansi pengiriman ke seluruh Indonesia, dari Sabang sampai Merauke.' },
+  { year: '2024', title: '10+ tahun', body: 'Lebih dari satu dekade melayani kontraktor, proyek, dan pengadaan pemerintah.' },
+];
+---
+
+<Base title="Tentang BSM — CV Bangun Sarana Makmur" description="Lebih dari 10 tahun melayani kontraktor dan proyek di seluruh Indonesia. Pemasok pemerintah, distributor material konstruksi one-stop.">
+  <section class="about-hero">
+    <div class="about-hero-glow" aria-hidden="true"></div>
+    <div class="container about-hero-grid">
+      <div class="about-hero-copy">
+        <span class="eyebrow">Tentang Kami</span>
+        <h1 class="display">Satu dekade membangun kepercayaan</h1>
+        <p class="about-lead">CV Bangun Sarana Makmur (BSM) adalah distributor material konstruksi yang menggabungkan produk dari beberapa pabrik menjadi satu sumber andal untuk kontraktor dan proyek di seluruh Indonesia.</p>
+      </div>
+      <div class="about-hero-proof">
+        <div class="proof-card">
+          <span class="proof-number">10+</span>
+          <span class="proof-label">Tahun berpengalaman</span>
+        </div>
+        <div class="proof-card">
+          <span class="proof-number">SNI</span>
+          <span class="proof-label">Terstandarisasi</span>
+        </div>
+        <div class="proof-card">
+          <span class="proof-number">100%</span>
+          <span class="proof-label">Indonesia</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container about-story">
+      <div class="story-content">
+        <span class="eyebrow">Cerita Kami</span>
+        <h2 class="headline">Dari Surabaya ke seluruh nusantara</h2>
+        <p>BSM didirikan pada tahun 2012 di Surabaya dengan satu misi sederhana: mempermudah pengadaan material konstruksi untuk kontraktor dan proyek.</p>
+        <p>Kami melihat bahwa pabrik tidak menjual eceran, dan kontraktor harus menghubungi banyak penyuplai untuk mendapatkan material yang berbeda. BSM hadir sebagai jembatan — menampung produk dari beberapa pabrik menjadi satu sumber yang andal.</p>
+        <p>Selama lebih dari satu dekade, kami telah melayani kontraktor swasta, proyek pemerintah, dan pengadaan infrastruktur di seluruh Indonesia. Dari pagar BRC untuk perimeter gedung, kawat duri untuk keamanan lahan, hingga guard rail untuk jalan nasional — semua bisa didapat dalam satu pesanan.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Nilai Kami</span>
+        <h2 class="headline">Apa yang kami pegang</h2>
+      </header>
+      <div class="values-grid">
+        {values.map((v) => (
+          <div class="value-card">
+            <h3 class="title">{v.title}</h3>
+            <p>{v.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Perjalanan</span>
+        <h2 class="headline">Milestone BSM</h2>
+      </header>
+      <div class="timeline">
+        {timeline.map((t) => (
+          <div class="timeline-item">
+            <span class="timeline-year">{t.year}</span>
+            <div class="timeline-content">
+              <h3 class="title">{t.title}</h3>
+              <p>{t.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-red cta-red">
+    <div class="container cta-inner">
+      <span class="eyebrow on-dark">Kontak</span>
+      <h2 class="headline">Butuh material untuk proyek Anda?</h2>
+      <p>Hubungi tim BSM untuk konsultasi produk dan estimasi pengiriman ke lokasi proyek.</p>
+      <div class="cta-actions">
+        <a class="btn-on-red" href={wa('Halo BSM, saya ingin konsultasi & minta penawaran material proyek.')}>WhatsApp</a>
+        <a class="btn btn-ghost on-dark" href={`mailto:${EMAIL}`}>Email kami</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  @import '../styles/about.css';
+</style>

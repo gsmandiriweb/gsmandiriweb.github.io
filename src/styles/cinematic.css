@@ -1,0 +1,217 @@
+/* Scroll-Driven Cinematic Experience
+   Uses CSS animation-timeline: scroll() where supported
+   Falls back to IntersectionObserver for older browsers
+*/
+
+/* ---- Word-by-word headline animation ---- */
+.word-reveal {
+  display: inline;
+}
+
+.word-reveal .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(4px);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out), filter 600ms var(--ease-out);
+}
+
+.word-reveal.is-in .word {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Stagger each word */
+.word-reveal .word:nth-child(1) { transition-delay: 0ms; }
+.word-reveal .word:nth-child(2) { transition-delay: 80ms; }
+.word-reveal .word:nth-child(3) { transition-delay: 160ms; }
+.word-reveal .word:nth-child(4) { transition-delay: 240ms; }
+.word-reveal .word:nth-child(5) { transition-delay: 320ms; }
+.word-reveal .word:nth-child(6) { transition-delay: 400ms; }
+.word-reveal .word:nth-child(7) { transition-delay: 480ms; }
+.word-reveal .word:nth-child(8) { transition-delay: 560ms; }
+.word-reveal .word:nth-child(9) { transition-delay: 640ms; }
+.word-reveal .word:nth-child(10) { transition-delay: 720ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .word-reveal .word {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* ---- Section cinematic transitions ---- */
+.section-cinematic {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  filter: blur(8px);
+  transition: opacity 800ms var(--ease-out), transform 800ms var(--ease-out), filter 800ms var(--ease-out);
+}
+
+.section-cinematic.is-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-cinematic {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* ---- Parallax depth layers ---- */
+.parallax-container {
+  perspective: 1000px;
+  overflow: hidden;
+}
+
+.parallax-back {
+  transform: translateZ(-200px) scale(1.2);
+  transition: transform 0.1s linear;
+}
+
+.parallax-front {
+  transform: translateZ(0);
+  transition: transform 0.1s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax-back, .parallax-front {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---- Image reveal with mask ---- */
+.image-reveal {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1000ms var(--ease-out);
+}
+
+.image-reveal.is-in {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-reveal {
+    clip-path: none;
+    transition: none;
+  }
+}
+
+/* ---- Text line reveal ---- */
+.line-reveal {
+  overflow: hidden;
+}
+
+.line-reveal .line {
+  transform: translateY(100%);
+  transition: transform 800ms var(--ease-out);
+}
+
+.line-reveal.is-in .line {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line-reveal .line {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---- Staggered card entrance ---- */
+.stagger-cinematic > * {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+.stagger-cinematic.is-in > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-cinematic.is-in > *:nth-child(2) { transition-delay: 100ms; }
+.stagger-cinematic.is-in > *:nth-child(3) { transition-delay: 200ms; }
+.stagger-cinematic.is-in > *:nth-child(4) { transition-delay: 300ms; }
+.stagger-cinematic.is-in > *:nth-child(5) { transition-delay: 400ms; }
+.stagger-cinematic.is-in > *:nth-child(6) { transition-delay: 500ms; }
+
+.stagger-cinematic.is-in > * {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger-cinematic > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---- Number counter animation ---- */
+.count-up {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Scroll progress glow ---- */
+.scroll-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 50%), 
+    oklch(60% 0.12 25 / 0.1), transparent 50%);
+}
+
+.scroll-glow.active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-glow { display: none; }
+}
+
+/* ---- Section divider wipe ---- */
+.wipe-reveal {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition: clip-path 1200ms var(--ease-out);
+}
+
+.wipe-reveal.is-in {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wipe-reveal {
+    clip-path: none;
+    transition: none;
+  }
+}
+
+/* ---- Horizontal scroll section ---- */
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}

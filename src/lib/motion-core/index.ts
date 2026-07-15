@@ -7,6 +7,7 @@ export { default as InteractiveGrid } from "./interactive-grid/InteractiveGrid.s
 export { default as MacosDock } from "./macos-dock/MacosDock.svelte";
 export { default as Magnetic } from "./magnetic/Magnetic.svelte";
 export { default as Marquee } from "./marquee/Marquee.svelte";
+export { default as Slideshow } from "./slideshow/Slideshow.svelte";
 export { default as SplitHover } from "./split-hover/SplitHover.svelte";
 export { default as SplitReveal } from "./split-reveal/SplitReveal.svelte";
 export { default as StackingWords } from "./stacking-words/StackingWords.svelte";

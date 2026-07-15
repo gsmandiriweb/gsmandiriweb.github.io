@@ -1,0 +1,162 @@
+---
+import Base from '../../layouts/Base.astro';
+import { waLink as wa, EMAIL } from '../../config/contact';
+
+const product = {
+  name: 'Guard Rail',
+  tagline: 'Pengaman jalan bahan tebal dengan standar perkerasan SNI untuk keselamatan infrastruktur',
+  heroImage: '/photos/generated/rail.webp',
+  description: 'Guard rail BSM adalah pengaman jalan yang diproduksi dengan standar SNI untuk keselamatan infrastruktur. Bahan tebal dan tahan benturan, cocok untuk jalan tol, jalan nasional, jembatan, dan area berbahaya lainnya. Dipercaya oleh kontraktor dan pemerintah di seluruh Indonesia.',
+  specs: [
+    { label: 'Material', value: 'Baja galvanis tebal' },
+    { label: 'Tebal plat', value: '2.5 mm, 3.0 mm, 3.2 mm' },
+    { label: 'Panjang', value: '4 meter per batang' },
+    { label: 'Tinggi', value: '75 cm, 85 cm' },
+    { label: 'Standar', value: 'SNI 2444-2008' },
+    { label: 'Finishing', value: 'Hot Dip Galvanize (HDG)' },
+  ],
+  features: [
+    'Tahan benturan — dirancang untuk menyerap energi tabrakan',
+    'Anti-karat — finishing HDG melindungi dari korosi jangka panjang',
+    'Standar SNI — memenuhi standar keselamatan jalan Indonesia',
+    'Mudah dipasang — sistem baut, bisa dipasang cepat di lokasi',
+  ],
+  gallery: [
+    '/photos/generated/rail.webp',
+    '/photos/IMG_4077.webp',
+    '/photos/IMG_4089.webp',
+  ],
+  relatedProducts: [
+    { name: 'Pagar BRC', slug: 'pagar-brc', photo: '/photos/IMG_4077.webp', spec: 'Pagar prefabrikasi besi beton las, finishing HDG anti-karat.' },
+    { name: 'Kawat Duri', slug: 'kawat-duri', photo: '/photos/generated/wire.webp', spec: 'Kawat duri galvanis tahan cuaca untuk keamanan lahan dan gudang.' },
+  ],
+};
+---
+
+<Base title={`${product.name} — BSM Distributor Material Konstruksi`} description={product.description}>
+  <section class="product-hero">
+    <div class="product-hero-glow" aria-hidden="true"></div>
+    <div class="container product-hero-grid">
+      <div class="product-hero-copy">
+        <span class="eyebrow">Produk</span>
+        <h1 class="display">{product.name}</h1>
+        <p class="product-tagline">{product.tagline}</p>
+        <div class="product-hero-actions">
+          <a class="btn btn-primary" href={wa(`Halo BSM, saya ingin minta penawaran untuk ${product.name}.`)}>
+            Minta Penawaran
+          </a>
+          <a class="btn btn-ghost" href="#spesifikasi">Lihat spesifikasi</a>
+        </div>
+      </div>
+      <div class="product-hero-media">
+        <img
+          src={product.heroImage}
+          alt={`${product.name} — produk BSM`}
+          width="1600"
+          height="1067"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container product-description">
+      <p class="lead">{product.description}</p>
+    </div>
+  </section>
+
+  <section id="spesifikasi" class="section">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Spesifikasi</span>
+        <h2 class="headline">Detail teknis</h2>
+      </header>
+      <div class="spec-grid">
+        {product.specs.map((s) => (
+          <div class="spec-item">
+            <dt class="spec-label">{s.label}</dt>
+            <dd class="spec-value">{s.value}</dd>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Keunggulan</span>
+        <h2 class="headline">Kenapa pilih {product.name} dari BSM?</h2>
+      </header>
+      <ul class="feature-list">
+        {product.features.map((f) => (
+          <li class="feature-item">
+            <span class="feature-check" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10.5L8 14.5L16 6.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Galeri</span>
+        <h2 class="headline">{product.name} di lapangan</h2>
+      </header>
+      <div class="product-gallery-grid">
+        {product.gallery.map((src, i) => (
+          <div class:list={['product-gallery-item', i === 0 ? 'product-gallery-wide' : '']}>
+            <img src={src} alt={`Dokumentasi ${product.name}`} width="800" height="600" loading="lazy" decoding="async" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-red cta-red">
+    <div class="container cta-inner">
+      <span class="eyebrow on-dark">Kontak</span>
+      <h2 class="headline">Butuh {product.name} untuk proyek Anda?</h2>
+      <p>Hubungi tim BSM untuk konsultasi produk dan estimasi pengiriman ke lokasi proyek.</p>
+      <div class="cta-actions">
+        <a class="btn-on-red" href={wa(`Halo BSM, saya ingin minta penawaran untuk ${product.name}.`)}>
+          WhatsApp
+        </a>
+        <a class="btn btn-ghost on-dark" href={`mailto:${EMAIL}`}>Email kami</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Produk Lain</span>
+        <h2 class="headline">Material lain dari BSM</h2>
+      </header>
+      <div class="related-grid">
+        {product.relatedProducts.map((p) => (
+          <a href={`/produk/${p.slug}`} class="related-card">
+            <div class="related-media">
+              <img src={p.photo} alt={p.name} width="600" height="400" loading="lazy" decoding="async" />
+            </div>
+            <div class="related-copy">
+              <h3 class="title">{p.name}</h3>
+              <p>{p.spec}</p>
+              <span class="related-link">Lihat produk →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  @import '../../styles/product.css';
+</style>
