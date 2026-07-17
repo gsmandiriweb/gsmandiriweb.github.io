@@ -63,7 +63,6 @@ const proofTicks = ['SNI', '10+ tahun pengalaman', 'Sabang–Merauke', 'Pemasok 
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-grid container">
       <div class="hero-copy reveal">
-        <span class="eyebrow">Distributor Material Konstruksi</span>
         <h1 class="display hero-title" data-word-reveal>Satu sumber untuk semua kebutuhan material proyek Anda</h1>
         <p class="hero-lead">Kami mempermudah pengadaan besi BRC, kawat duri, dan guard rail menjadi satu pasokan yang andal, dari pabrik langsung ke lokasi proyek Anda.</p>
         <div class="hero-cta">
@@ -76,7 +75,7 @@ const proofTicks = ['SNI', '10+ tahun pengalaman', 'Sabang–Merauke', 'Pemasok 
       <div class="hero-media-wrap">
         <div class="hero-halo" aria-hidden="true"></div>
         <div class="hero-media">
-          <img src="/photos/IMG_4077.webp" alt="Proyek BSM: material pagar dan struktur baja di lokasi konstruksi" width="1600" height="1067" loading="eager" decoding="async" data-parallax-speed="0.15" />
+          <img src="/photos/generated/hero.webp" alt="Material BSM: besi BRC, kawat duri, dan guard rail di lokasi proyek" width="1600" height="1067" loading="eager" decoding="async" data-parallax-speed="0.15" />
         </div>
       </div>
     </div>
@@ -111,7 +110,6 @@ const proofTicks = ['SNI', '10+ tahun pengalaman', 'Sabang–Merauke', 'Pemasok 
   <section id="produk" class="section section-soft section-cinematic">
     <div class="container">
       <header class="section-head">
-        <span class="eyebrow">Produk Inti</span>
         <h2 class="headline" data-word-reveal>Tiga material, satu pesanan.</h2>
         <p class="section-intro">Semua material ditarik langsung dari pabrik dan dikirim bersama ke lokasi proyek Anda.</p>
       </header>
@@ -189,8 +187,7 @@ const proofTicks = ['SNI', '10+ tahun pengalaman', 'Sabang–Merauke', 'Pemasok 
   <section id="jangkauan" class="section section-cinematic">
     <div class="container">
       <div class="coverage-grid">
-        <header class="section-head">
-          <span class="eyebrow">Jangkauan</span>
+      <header class="section-head">
           <h2 class="headline" data-word-reveal>Dari Sabang sampai Merauke</h2>
           <p class="section-intro">Pengadaan material proyek di seluruh nusantara — bukan hanya Jawa.</p>
         </header>
@@ -204,8 +201,8 @@ const proofTicks = ['SNI', '10+ tahun pengalaman', 'Sabang–Merauke', 'Pemasok 
     </div>
   </section>
 
-  <!-- Divider: Coverage → Gallery -->
-  <div class="section-divider" aria-hidden="true">
+  <!-- Divider: Coverage → Gallery (red atmosphere band) -->
+  <div class="section-divider" aria-hidden="true" data-texture="smoke-red">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M0,120 L0,80 Q360,0 720,60 Q1080,120 1440,40 L1440,120 Z" fill="var(--surface)"/>
     </svg>
@@ -214,9 +211,8 @@ const proofTicks = ['SNI', '10+ tahun pengalaman', 'Sabang–Merauke', 'Pemasok 
   <section id="galeri" class="section section-soft section-cinematic">
     <div class="container">
       <header class="section-head">
-        <span class="eyebrow">Galeri Proyek</span>
-        <h2 class="headline" data-word-reveal>Material BSM di lapangan</h2>
-      </header>
+          <h2 class="headline" data-word-reveal>Material BSM di lapangan</h2>
+        </header>
       <div class="gallery-grid stagger-cinematic">
         {gallery.map((src, i) => (
           <div class:list={['gallery-item', i === 0 ? 'gallery-wide' : '']}>
