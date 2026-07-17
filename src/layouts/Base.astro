@@ -1,6 +1,7 @@
 ---
 import '../app.css';
 import { WHATSAPP_NUMBER, EMAIL } from '../config/contact';
+import ScrollProgress from '../components/react/ScrollProgress.tsx';
 interface Props {
   title: string;
   description?: string;
@@ -76,7 +77,7 @@ const jsonLd =
   <body>
     <a class="skip-link" href="#main">Lewati ke konten</a>
     <header class="site-header" id="site-header">
-      <div class="scroll-progress" aria-hidden="true"></div>
+      <ScrollProgress client:load />
       <a href="/" class="brand">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
@@ -175,20 +176,6 @@ const jsonLd =
         };
         updateActive();
         window.addEventListener('scroll', updateActive, { passive: true });
-      }
-
-      const bar = document.querySelector<HTMLElement>('.scroll-progress');
-      if (bar) {
-        const setProgress = () => {
-          const h = document.documentElement;
-          const max = h.scrollHeight - h.clientHeight;
-          const p = max > 0 ? h.scrollTop / max : 0;
-          bar.style.transform = `scaleX(${p})`;
-          bar.classList.toggle('complete', p > 0.98);
-        };
-        setProgress();
-        window.addEventListener('scroll', setProgress, { passive: true });
-        window.addEventListener('resize', setProgress, { passive: true });
       }
     </script>
     <style is:global>

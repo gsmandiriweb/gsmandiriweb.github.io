@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import svelte from '@astrojs/svelte';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -13,6 +14,7 @@ export default defineConfig({
   site: 'https://cvbsm.example.com',
   integrations: [
     svelte(),
+    react(),
     sitemap(),
   ],
   vite: {
