@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react';
 
 /**
- * Hero scroll cue — a brand-red animated chevron that invites scrolling.
+ * Hero scroll cue — a brand-blue animated chevron that invites scrolling.
  * Purely decorative (no content depends on it), so it complies with the
  * DESIGN.md rule that motion must never gate content visibility.
  * Single accent, sharp geometry, reduced-motion safe.
@@ -49,7 +49,7 @@ export default function ScrollCue({ label = 'Gulir' }: { label?: string }) {
             width: 4,
             height: 8,
             borderRadius: 2,
-            background: 'var(--red)',
+            background: 'var(--accent)',
           }}
           animate={reduce ? { y: 0 } : { y: [0, 12, 0] }}
           transition={reduce ? undefined : { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}

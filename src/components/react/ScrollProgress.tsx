@@ -4,7 +4,7 @@ import { motion, useSpring, useMotionValue, useReducedMotion } from 'motion/reac
 /**
  * Brand-red scroll progress line driven by a motion spring.
  * Replaces the CSS-only `.scroll-progress` bar in Base.astro.
- * On-brand: single red accent, no second color, reduced-motion safe.
+ * On-brand: single accent, no second color, reduced-motion safe.
  */
 export default function ScrollProgress() {
   const reduce = useReducedMotion();
@@ -48,7 +48,7 @@ export default function ScrollProgress() {
           height: 2,
           transformOrigin: '0 50%',
           transform: `scaleX(${progress})`,
-          background: 'linear-gradient(90deg, #b91c12, #e22b1e)',
+          background: 'linear-gradient(90deg, #1f3f5f, #2f5d8a)',
         }}
       />
     );
@@ -65,14 +65,14 @@ export default function ScrollProgress() {
         height: 2,
         transformOrigin: '0 50%',
         scaleX,
-        background: 'linear-gradient(90deg, #b91c12, #e22b1e)',
-        boxShadow: '0 0 8px oklch(50% 0.12 25 / 0.35)',
+        background: 'linear-gradient(90deg, #1f3f5f, #2f5d8a)',
+        boxShadow: '0 0 8px oklch(50% 0.12 250 / 0.35)',
       }}
       animate={{
         boxShadow:
           complete.get() === 1
-            ? '0 0 12px oklch(50% 0.12 25 / 0.5), 0 0 24px oklch(50% 0.12 25 / 0.2)'
-            : '0 0 8px oklch(50% 0.12 25 / 0.35)',
+            ? '0 0 12px oklch(50% 0.12 250 / 0.5), 0 0 24px oklch(50% 0.12 250 / 0.2)'
+            : '0 0 8px oklch(50% 0.12 250 / 0.35)',
       }}
     />
   );

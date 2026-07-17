@@ -8,8 +8,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(75% 60% at 50% 20%, var(--red-tint), transparent 80%),
-    radial-gradient(50% 50% at 80% 60%, oklch(97% 0.01 25), transparent 70%);
+    radial-gradient(75% 60% at 50% 20%, var(--accent-tint), transparent 80%),
+    radial-gradient(50% 50% at 80% 60%, oklch(97% 0.01 250), transparent 70%);
   z-index: 0;
 }
 .product-hero-grid {
@@ -106,8 +106,8 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--red-tint);
-  color: var(--red);
+  background: var(--accent-tint);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,7 +187,7 @@
 .related-link {
   font-weight: 600;
   font-size: 0.95rem;
-  color: var(--red);
+  color: var(--accent);
   margin-top: 8px;
 }
 

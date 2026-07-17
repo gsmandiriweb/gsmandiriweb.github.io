@@ -21,6 +21,32 @@
   z-index: 1;
 }
 
+/* ---------- AMBIENT SQUARE GRID (replaces raster textures) ---------- */
+/* Regular blueprint-style square grid, edge-faded. Deliberate and
+   ordered (not scattered noise). Pure CSS — no WebGL, no JS cost.
+   Sits behind content; visible through the transparent sections. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* a few red grid-intersection markers */
+    radial-gradient(circle at 17% 28%, rgba(47, 93, 138, 0.55) 0 2.5px, transparent 3px),
+    radial-gradient(circle at 71% 21%, rgba(47, 93, 138, 0.45) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 39% 77%, rgba(47, 93, 138, 0.5) 0 2.5px, transparent 3px),
+    radial-gradient(circle at 84% 63%, rgba(47, 93, 138, 0.4) 0 2px, transparent 2.5px),
+    /* coarse grid */
+    repeating-linear-gradient(0deg, rgba(21, 23, 28, 0.06) 0 1px, transparent 1px 128px),
+    repeating-linear-gradient(90deg, rgba(21, 23, 28, 0.06) 0 1px, transparent 1px 128px),
+    /* fine grid */
+    repeating-linear-gradient(0deg, rgba(21, 23, 28, 0.04) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, rgba(21, 23, 28, 0.04) 0 1px, transparent 1px 26px);
+  -webkit-mask-image: radial-gradient(130% 120% at 50% 45%, #000 42%, transparent 100%);
+  mask-image: radial-gradient(130% 120% at 50% 45%, #000 42%, transparent 100%);
+}
+
 .section { padding-block: clamp(88px, 12vw, 160px); position: relative; }
 .section-soft {
   background: transparent;
@@ -83,7 +109,7 @@
   inset: 0;
   background: radial-gradient(
     600px circle at var(--spotlight-x) var(--spotlight-y),
-    oklch(60% 0.15 25 / 0.15),
+    oklch(60% 0.15 250 / 0.15),
     transparent 60%
   );
   pointer-events: none;
@@ -110,8 +136,8 @@
 .section-soft::before { content: none; }
 .section-red {
   background:
-    radial-gradient(80% 140% at 20% -20%, oklch(55% 0.15 25 / 0.55), transparent 55%),
-    linear-gradient(135deg, var(--red-deep), oklch(42% 0.13 25));
+    radial-gradient(80% 140% at 20% -20%, oklch(55% 0.15 250 / 0.55), transparent 55%),
+    linear-gradient(135deg, var(--accent-deep), oklch(42% 0.13 250));
   color: #fff;
 }
 .section-red::before { content: none; }
@@ -129,7 +155,7 @@
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--red-ink);
+  color: var(--accent-ink);
   display: block;
   margin-bottom: 16px;
 }
@@ -151,7 +177,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: radial-gradient(120% 80% at 85% 0%, var(--red-tint), transparent 55%);
+  background: radial-gradient(120% 80% at 85% 0%, var(--accent-tint), transparent 55%);
 }
 .hero::after {
   content: "";
@@ -168,7 +194,7 @@
   height: 52vw;
   max-width: 700px;
   max-height: 700px;
-  background: radial-gradient(circle at 60% 30%, oklch(60% 0.12 25 / 0.14), transparent 60%);
+  background: radial-gradient(circle at 60% 30%, oklch(60% 0.12 250 / 0.14), transparent 60%);
   z-index: 2;
   pointer-events: none;
 }
@@ -199,7 +225,7 @@
 .hero-copy { padding-inline-end: 0; position: relative; }
 .hero-copy::before { content: none; }
 .hero-title { margin: 18px 0 0; }
-.hero-title .hl { color: var(--red); }
+.hero-title .hl { color: var(--accent); }
 .hero-lead {
   color: var(--muted);
   font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
@@ -244,16 +270,16 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, oklch(22% 0.01 25 / 0.0) 60%, oklch(22% 0.01 25 / 0.25) 100%);
+  background: linear-gradient(180deg, oklch(22% 0.01 250 / 0.0) 60%, oklch(22% 0.01 250 / 0.25) 100%);
 }
 
 .hero-proof {
   position: relative;
   z-index: 3;
   border-top: 1px solid var(--border);
-  border-bottom: 2px solid var(--red);
+  border-bottom: 2px solid var(--accent);
   padding-block: 28px;
-  background: linear-gradient(180deg, var(--bg), oklch(98% 0.005 25));
+  background: linear-gradient(180deg, var(--bg), oklch(98% 0.005 250));
 }
 .hero-proof ul {
   list-style: none;
@@ -324,7 +350,7 @@
   position: absolute;
   top: 14px;
   left: 14px;
-  background: var(--red);
+  background: var(--accent);
   color: #fff;
   font-weight: 700;
   font-size: 0.72rem;
@@ -344,7 +370,7 @@
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: 0.1em;
-  color: var(--red);
+  color: var(--accent);
   margin-bottom: 14px;
 }
 .product-copy h3 { margin: 0; }
@@ -367,20 +393,20 @@
   font-size: 0.95rem;
   letter-spacing: -0.01em;
   color: #fff;
-  background: var(--red);
-  border: 1px solid var(--red-deep);
+  background: var(--accent);
+  border: 1px solid var(--accent-deep);
   border-radius: var(--radius-md);
   text-decoration: none;
-  box-shadow: 0 10px 24px -12px oklch(40% 0.12 25 / 0.45),
+  box-shadow: 0 10px 24px -12px oklch(40% 0.12 250 / 0.45),
               inset 0 1px 0 oklch(100% 0 0 / 0.15);
   transition: background 220ms var(--ease-out), transform 220ms var(--ease-out),
     box-shadow 220ms var(--ease-out);
 }
 .product-link:hover {
-  background: var(--red-deep);
+  background: var(--accent-deep);
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px -10px oklch(40% 0.12 25 / 0.55),
+  box-shadow: 0 14px 28px -10px oklch(40% 0.12 250 / 0.55),
               inset 0 1px 0 oklch(100% 0 0 / 0.2);
 }
 .product-link span { transition: transform 200ms var(--ease-out); }
@@ -389,7 +415,7 @@
 /* ---------- ONE-STOP RED BAND ---------- */
 .onestop { max-width: 56ch; position: relative; z-index: 1; }
 .onestop h2 { color: #fff; }
-.onestop p { color: oklch(96% 0.01 25); font-size: 1.0625rem; margin: 20px 0 0; }
+.onestop p { color: oklch(96% 0.01 250); font-size: 1.0625rem; margin: 20px 0 0; }
 .btn-on-red {
   display: inline-flex;
   align-items: center;
@@ -400,7 +426,7 @@
   border-radius: var(--radius-md);
   text-decoration: none;
   background: #fff;
-  color: var(--red-deep);
+  color: var(--accent-deep);
   border: 1px solid #fff;
   margin-top: 32px;
   min-height: 44px;
@@ -422,7 +448,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--accent);
   color: #fff;
   display: grid;
   place-items: center;
@@ -531,7 +557,7 @@
   z-index: 1;
 }
 .cta-inner h2 { color: #fff; }
-.cta-inner p { color: oklch(96% 0.01 25); margin: 16px 0 0; font-size: 1.0625rem; max-width: 50ch; }
+.cta-inner p { color: oklch(96% 0.01 250); margin: 16px 0 0; font-size: 1.0625rem; max-width: 50ch; }
 .cta-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 32px; }
 
 /* ---------- BLOG ---------- */
@@ -543,9 +569,9 @@
   gap: 14px;
 }
 .post-item { padding: 24px 28px; border-radius: var(--radius-md); background: var(--bg); border: 1px solid var(--border); transition: border-color 220ms var(--ease-out), transform 220ms var(--ease-out); }
-.post-item:hover { border-color: var(--red); transform: translateY(-2px); }
+.post-item:hover { border-color: var(--accent); transform: translateY(-2px); }
 .post-title { font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
-.post-item:hover .post-title { color: var(--red-deep); }
+.post-item:hover .post-title { color: var(--accent-deep); }
 .post-meta { font-size: 0.95rem; color: var(--muted); margin-top: 6px; }
 .all-posts { margin-top: 28px; }
 
@@ -687,13 +713,13 @@
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   background:
-    radial-gradient(circle at 50% 50%, transparent 57%, oklch(55% 0.15 25 / 0.06) 61%, transparent 70%),
+    radial-gradient(circle at 50% 50%, transparent 57%, oklch(55% 0.15 250 / 0.06) 61%, transparent 70%),
     conic-gradient(
       from 205deg at 50% 50%,
-      var(--red) 0deg,
+      var(--accent) 0deg,
       transparent 38deg,
       transparent 318deg,
-      var(--red) 360deg
+      var(--accent) 360deg
     );
   -webkit-mask: radial-gradient(circle at 50% 50%, transparent 56%, #000 60%, #000 73%, transparent 79%);
   mask: radial-gradient(circle at 50% 50%, transparent 56%, #000 60%, #000 73%, transparent 79%);
@@ -715,8 +741,8 @@
   overflow: hidden;
   padding-block: 14px;
   border-top: 1px solid var(--border);
-  border-bottom: 2px solid var(--red);
-  background: linear-gradient(180deg, var(--bg), oklch(98% 0.005 25));
+  border-bottom: 2px solid var(--accent);
+  background: linear-gradient(180deg, var(--bg), oklch(98% 0.005 250));
 }
 .proof-ticker .marquee-part {
   align-items: center;
@@ -736,8 +762,8 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 0 0 4px var(--red-tint);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-tint);
   flex: none;
 }
 

@@ -7,7 +7,7 @@ import * as THREE from 'three';
  * On-brand 3D Indonesia coverage map (react-three-fiber).
  * Replaces the flat SVG archipelago. The camera is framed to the
  * archipelago bounds (not a whole Earth), so Sabang→Merauke reads clearly.
- * Single brand-red accent + graphite; reduced-motion renders it static.
+ * Single brand-blue accent + graphite; reduced-motion renders it static.
  */
 
 // SVG viewBox 0 0 1411 520 — island polygons copied from the original map.
@@ -84,7 +84,7 @@ function Archipelago({ animate }: { animate: boolean }) {
         return (
           <mesh key={i} geometry={geo}>
             <meshStandardMaterial
-              color="#e22b1e"
+              color="#2f5d8a"
               transparent
               opacity={0.5}
               roughness={0.55}
@@ -99,7 +99,7 @@ function Archipelago({ animate }: { animate: boolean }) {
         return (
           <lineSegments key={`e${i}`}>
             <edgesGeometry args={[geo]} />
-            <lineBasicMaterial color="#b91c12" transparent opacity={0.9} />
+            <lineBasicMaterial color="#1f3f5f" transparent opacity={0.9} />
           </lineSegments>
         );
       })}
@@ -109,7 +109,7 @@ function Archipelago({ animate }: { animate: boolean }) {
         return (
           <mesh key={`c${i}`} position={[px, py, 0.35]}>
             <circleGeometry args={[r * SCALE * 2.0, 24]} />
-            <meshBasicMaterial color="#e22b1e" />
+            <meshBasicMaterial color="#2f5d8a" />
           </mesh>
         );
       })}
@@ -147,11 +147,11 @@ function TravelPath({ animate }: { animate: boolean }) {
             args={[new Float32Array(pts.flatMap((p) => [p.x, p.y, p.z])), 3]}
           />
         </bufferGeometry>
-        <lineBasicMaterial color="#b91c12" transparent opacity={0.5} />
+        <lineBasicMaterial color="#1f3f5f" transparent opacity={0.5} />
       </line>
       <mesh ref={dot} position={[0, 0, 0.35]}>
         <sphereGeometry args={[0.06, 16, 16]} />
-        <meshBasicMaterial color="#e22b1e" />
+        <meshBasicMaterial color="#2f5d8a" />
       </mesh>
     </group>
   );
