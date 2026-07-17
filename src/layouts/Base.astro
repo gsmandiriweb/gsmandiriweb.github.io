@@ -2,6 +2,7 @@
 import '../app.css';
 import { WHATSAPP_NUMBER, EMAIL } from '../config/contact';
 import ScrollProgress from '../components/react/ScrollProgress.tsx';
+import Background3D from '../components/react/Background3D.tsx';
 interface Props {
   title: string;
   description?: string;
@@ -76,6 +77,7 @@ const jsonLd =
   </head>
   <body>
     <a class="skip-link" href="#main">Lewati ke konten</a>
+    <Background3D client:idle />
     <header class="site-header" id="site-header">
       <ScrollProgress client:load />
       <a href="/" class="brand">
